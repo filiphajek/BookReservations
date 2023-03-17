@@ -1,0 +1,19 @@
+Knihovní rezervační systém
+- entity: kniha, autor, rezervace, recenze, uživatel
+- uživatelské role: admin, knihovník, čtenář
+- funkce:
+        - založení účtu (mobilní aplikace bude vždy požadovat vytvoření účtu nového uživatele), úprava profilu
+	- rezervace knihy, prodloužení, zrušení rezervace 
+	- čtenář může napsat recenzi knihy, kterou si půjčil a vrátil (+ editace, smazání)
+        - vyhledávání knihy podle jména, podle autora, podle dostupnosti
+        - historie rezervací
+	- wishlist
+
+- využiji API, kterou jsem implementoval na podzim v předmětu PV179 (klientská část byla napsána v Reactu a implementovala všechny role)
+- některé části API se zrefaktorizují, některé funkcionality se na API pozmění nebo přidají pro potřeby tohoto projektu - výrazné změny na API však nebudou
+- mobilní aplikace bude sloužit pouze pro čtenáře (funkce role admina a knihovníka tu nebudou implementovány, možná ano, pokud bude čas) 
+
+- funkce, které se mohou přidat:
+	- knihovník může vytvořit hlasování o přidání některé nové knihy do knihovny pro zjištění zájmu (tato část by se musela implementovat i na API)
+		-> v mobilní aplikaci by vznikla stránka s aktuálními hlasováními
+        - přidání ostatních rolí
