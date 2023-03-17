@@ -1,4 +1,4 @@
-name: ci-pipeline
+name: ci-api
 
 on:
   push:
@@ -31,10 +31,10 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore api/src/BookReservations.Api/BookReservations.Api.csproj
     
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build api/src/BookReservations.Api/BookReservations.Api.csproj --no-restore
       
       - name: Test
         run: dotnet test --no-build
