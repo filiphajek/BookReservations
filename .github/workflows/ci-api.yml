@@ -1,0 +1,42 @@
+name: ci-pipeline
+
+on:
+  push:
+    branches: [ "main", "feature/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          SA_PASSWORD: Sql12345*
+          ACCEPT_EULA: Y
+        ports:
+          - 1433:1433
+        options: >-
+            --health-cmd "/opt/mssql-tools/bin/sqlcmd -U SA -P Sql12345* -Q 'select 1' -b -o /dev/null"
+            --health-interval 60s
+            --health-timeout 30s
+            --health-start-period 20s
+            --health-retries 3
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+    
+      - name: Build
+        run: dotnet build --no-restore
+      
+      - name: Test
+        run: dotnet test --no-build
+        env:
+          TEST_ENVIRONMENT: actions

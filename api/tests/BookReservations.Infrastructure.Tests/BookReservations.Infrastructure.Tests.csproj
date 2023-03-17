@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+	 <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+	 <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	 <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+	 <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BookReservations.Infrastructure.DAL.EFcore\BookReservations.Infrastructure.DAL.EFcore.csproj" />
+    <ProjectReference Include="..\..\src\BookReservations.Infrastructure.DAL\BookReservations.Infrastructure.DAL.csproj" />
+    <ProjectReference Include="..\..\src\BookReservations.Infrastructure\BookReservations.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
