@@ -24,7 +24,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult> UpdateUserAsync([FromForm] UserUpdateModel user, IFormFile? file, CancellationToken cancellationToken)
+    public async Task<ActionResult> UpdateUser([FromForm] UserUpdateModel user, IFormFile? file, CancellationToken cancellationToken)
     {
         if (!User.IsInRole(BookReservationsRoles.Admin))
         {

@@ -4,11 +4,40 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BookReservations.App"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:views="clr-namespace:BookReservations.App.Views"
+    xmlns:viewModels="clr-namespace:BookReservations.App.ViewModels"
+    Shell.FlyoutBehavior="Flyout">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- todo use Shell.FlyoutBehavior -->
+
+    <Shell.FlyoutHeader>
+        <Grid HorizontalOptions="Start">
+            <Image HeightRequest="50"
+                   HorizontalOptions="Start"
+                   Source="/Images/dotnet_bot.svg"
+                   Margin="0, 10, 0, 0"/>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="20, *"
+                  ColumnSpacing="10"
+                  Padding="10">
+
+                <Label Grid.Column="1" Text="{Binding Title}"
+                       VerticalOptions="Center"
+                       TextColor="White"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+    
+    <FlyoutItem Title="Books">
+        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Login">
+        <ShellContent Title="Login" ContentTemplate="{DataTemplate views:LoginPage}" Route="login"/>
+    </FlyoutItem>
 
 </Shell>

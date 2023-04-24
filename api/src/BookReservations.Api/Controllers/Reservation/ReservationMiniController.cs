@@ -3,6 +3,7 @@ using BookReservations.Api.BL.Models;
 using BookReservations.Api.DAL.Entities;
 using BookReservations.Api.DAL.Enums;
 using BookReservations.Infrastructure;
+using BookReservations.Infrastructure.BL.Common;
 using BookReservations.Infrastructure.BL.Queries;
 using BookReservations.Infrastructure.DAL.EFcore.Extensions;
 using BookReservations.Infrastructure.Extensions;
@@ -42,7 +43,10 @@ public class ReservationMiniController : MiniController
             var result = await mediator.Send(new PaginatedQuery<ReservationModel, Reservation>(
                 contract.Page, contract.PageSize, contract.OrderBy, contract.IsAscending, Predicate), cancellationToken);
             return Results.Ok(result);
-        }).RequireAuthorization();
+        })
+        .RequireAuthorization()
+        .WithName("GetReservations")
+        .Produces<PaginatedQueryResult<ReservationModel>>();
 
         endpoints.MapPost("{reservationId}/cancel", async ([FromRoute] int reservationId, IMediator meditor, CancellationToken cancellationToken) =>
         {
@@ -58,7 +62,11 @@ public class ReservationMiniController : MiniController
                 return Results.Ok();
             }
             return Results.BadRequest(result);
-        }).RequireAuthorization(BookReservationsPolicies.UserPolicy);
+        })
+        .RequireAuthorization(BookReservationsPolicies.UserPolicy)
+        .WithName("CancelReservation")
+        .Produces<ErrorPropertyResponse>(400)
+        .Produces(200);
 
         endpoints.MapPost("{reservationId}/extend", async ([FromRoute] int reservationId, IMediator meditor, CancellationToken cancellationToken) =>
         {
@@ -74,7 +82,11 @@ public class ReservationMiniController : MiniController
                 return Results.Ok();
             }
             return Results.BadRequest(result);
-        }).RequireAuthorization(BookReservationsPolicies.UserPolicy);
+        })
+        .RequireAuthorization(BookReservationsPolicies.UserPolicy)
+        .WithName("ExtendReservation")
+        .Produces<ErrorPropertyResponse>(400)
+        .Produces(200);
 
         endpoints.MapPut("", async ([FromBody] ICollection<UpdateReservationModel> reservations, IMediator meditor, CancellationToken cancellationToken) =>
         {
@@ -86,6 +98,10 @@ public class ReservationMiniController : MiniController
                 return Results.Ok();
             }
             return Results.BadRequest(result);
-        }).RequireAuthorization(BookReservationsPolicies.CanUpdateBookReservationPolicy);
+        })
+        .RequireAuthorization(BookReservationsPolicies.CanUpdateBookReservationPolicy)
+        .WithName("UpdateReservations")
+        .Produces<ErrorPropertyResponse>(400)
+        .Produces(200);
     }
 }

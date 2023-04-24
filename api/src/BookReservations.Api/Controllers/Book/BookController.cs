@@ -24,7 +24,10 @@ public class BookController : ControllerBase
 
     [Authorize(Policy = BookReservationsPolicies.CanUpdateBookReservationPolicy)]
     [HttpPost]
-    public async Task<ActionResult> CreateBookAsync([FromForm] BookModel book, [FromForm] ICollection<int> authorIds, IFormFile? file, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(IDictionary<string, string[]>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorPropertyResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorPropertyResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult> CreateBook([FromForm] BookModel book, [FromForm] ICollection<int> authorIds, IFormFile? file, CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(book, cancellationToken);
         if (!validationResult.IsValid)

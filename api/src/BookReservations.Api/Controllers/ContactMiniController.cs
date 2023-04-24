@@ -13,9 +13,11 @@ public class ContactMiniController : MiniController
         endpoints.AllowAnonymous();
 
         endpoints.MapGet("librarians", (IMediator mediator)
-            => mediator.Send(new SimpleQuery<UserModel, User>(i => i.Role == BookReservationsRoles.Librarian)));
+            => mediator.Send(new SimpleQuery<UserModel, User>(i => i.Role == BookReservationsRoles.Librarian)))
+            .WithName("GetLibrarians");
 
         endpoints.MapGet("admins", (IMediator mediator)
-            => mediator.Send(new SimpleQuery<UserModel, User>(i => i.Role == BookReservationsRoles.Admin)));
+            => mediator.Send(new SimpleQuery<UserModel, User>(i => i.Role == BookReservationsRoles.Admin)))
+            .WithName("GetAdmins");
     }
 }

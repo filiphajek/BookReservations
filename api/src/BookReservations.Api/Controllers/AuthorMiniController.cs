@@ -17,15 +17,18 @@ public class AuthorMiniController : MiniController
         endpoints.AllowAnonymous();
 
         endpoints.MapGet("", async (IMediator mediator, CancellationToken cancellationToken)
-            => await mediator.Send(new SimpleQuery<AuthorModel, Author>(), cancellationToken));
+            => await mediator.Send(new SimpleQuery<AuthorModel, Author>(), cancellationToken))
+            .WithName("GetAuthors");
 
         endpoints.MapGet("cached", async (IMediator mediator, CancellationToken cancellationToken)
             => await mediator.Send(new SimpleQuery<AuthorSimpleModel, Author>(), cancellationToken))
-                .CacheOutput(nameof(OutputCachePolicy));
+                .CacheOutput(nameof(OutputCachePolicy))
+                .WithName("GetCachedAuthors");
 
         endpoints.MapPost("", async ([FromBody] AuthorModel author, IMediator mediator, CancellationToken cancellationToken)
             => (await mediator.Send(new SetCommand<AuthorModel>(new[] { author }), cancellationToken)).FirstOrDefault())
                 .RequireAuthorization(BookReservationsPolicies.CanUpdateBookReservationPolicy)
+                .WithName("CreateAuthor")
                 .AddEndpointFilter<ValidationFilter<AuthorModel>>();
     }
 }

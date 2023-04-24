@@ -7,6 +7,8 @@ using BookReservations.Api.Middlewares;
 using BookReservations.Api.Services;
 using BookReservations.Infrastructure;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 
@@ -26,12 +28,25 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<BookReservationsDefaults>(builder.Configuration.GetSection(nameof(BookReservationsDefaults)));
 builder.Services.Configure<AuthServiceOptions>(builder.Configuration.GetSection(nameof(AuthServiceOptions)));
-builder.Services.AddAuthentication("default").AddCookie("default", c =>
-{
-    c.Cookie.Name = "book-reservation-cookie";
-    c.Cookie.SameSite = SameSiteMode.Lax;
-    c.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-});
+builder.Services.AddAuthentication("default")
+    .AddCookie("default", c =>
+    {
+        c.Cookie.Name = "book-reservation-cookie";
+        c.Cookie.SameSite = SameSiteMode.Lax;
+        c.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    })
+    .AddJwtBearer(i => i.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration[$"{nameof(AuthServiceOptions)}:{nameof(AuthServiceOptions.Issuer)}"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration[$"{nameof(AuthServiceOptions)}:{nameof(AuthServiceOptions.Audience)}"],
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration[$"{nameof(AuthServiceOptions)}:{nameof(AuthServiceOptions.SecretKey)}"]!))
+    });
+
 builder.Services.AddAuthorization(i =>
 {
     i.AddPolicy(BookReservationsPolicies.AdminPolicy, p =>

@@ -28,16 +28,24 @@ public class UserMiniController : MiniController
             }
             var result = (await mediator.Send(new SimpleQuery<UserDetailModel, User>(i => i.Id == userId), cancellationToken)).Single();
             return Results.Ok(result);
-        }).RequireAuthorization();
+        })
+        .RequireAuthorization()
+        .WithName("GetUser")
+        .ProducesProblem(401)
+        .Produces<UserDetailModel>();
 
         endpoints.MapGet("cached", async (IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken)
             => await mediator.Send(new SimpleQuery<UserInfoModel, User>(i => i.Role == BookReservationsRoles.User), cancellationToken))
                 .RequireAuthorization(BookReservationsPolicies.ViewAllUsers)
-                .CacheOutput(nameof(OutputCachePolicy));
+                .CacheOutput(nameof(OutputCachePolicy))
+                .WithName("GetCachedUsers")
+                .Produces<ICollection<UserInfoModel>>();
 
         endpoints.MapGet("", async ([AsParameters] GetUsersContract contract, CancellationToken cancellationToken)
             => await contract.Mediator.Send(new UserPaginatedQuery(
                 contract.Page, contract.PageSize, contract.OrderBy, contract.IsAscending, contract.SearchText), cancellationToken))
-                    .RequireAuthorization(BookReservationsPolicies.ViewAllUsers);
+                    .RequireAuthorization(BookReservationsPolicies.ViewAllUsers)
+                    .WithName("GetUsers")
+                    .Produces<PaginatedQueryResult<UserInfoModel>>();
     }
 }

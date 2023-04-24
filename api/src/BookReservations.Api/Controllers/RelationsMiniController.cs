@@ -25,7 +25,11 @@ public class RelationsMiniController : MiniController
             }
             var result = await AddRelation(userId.Value, bookIds, UserBookRelationType.Wishlist, mediator, cancellationToken);
             return result.Any() ? Results.Ok(result) : Results.NoContent();
-        });
+        })
+        .Produces<ICollection<RelationModel>>()
+        .WithName("AddBooksToWishlist")
+        .ProducesProblem(401)
+        .Produces(204);
 
         endpoints.MapPost("subscription", async ([FromBody] ICollection<int> bookIds, IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
@@ -36,7 +40,11 @@ public class RelationsMiniController : MiniController
             }
             var result = await AddRelation(userId.Value, bookIds, UserBookRelationType.Subscription, mediator, cancellationToken);
             return result.Any() ? Results.Ok(result) : Results.NoContent();
-        });
+        })
+        .ProducesProblem(401)
+        .WithName("SubscribeToBooks")
+        .Produces<ICollection<RelationModel>>()
+        .Produces(204);
 
         endpoints.MapGet("", async ([FromQuery] UserBookRelationType? relationType, IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
@@ -49,7 +57,11 @@ public class RelationsMiniController : MiniController
                 i => i.RelationType == relationType && userId.Value == i.UserId), cancellationToken);
 
             return result.Any() ? Results.Ok(result) : Results.NoContent();
-        });
+        })
+        .ProducesProblem(401)
+        .WithName("GetRelations")
+        .Produces<ICollection<RelationInfoModel>>()
+        .Produces(204);
 
         endpoints.MapDelete("", async ([FromBody] ICollection<int> relationIds, IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
@@ -59,9 +71,12 @@ public class RelationsMiniController : MiniController
                 return Results.Unauthorized();
             }
             var ids = relationIds.Distinct().ToArray();
-            var result = await mediator.Send(new DeleteCommand<UserBookRelations>(i => ids.Contains(i.Id)), cancellationToken);
+            await mediator.Send(new DeleteCommand<UserBookRelations>(i => ids.Contains(i.Id)), cancellationToken);
             return Results.NoContent();
-        });
+        })
+        .ProducesProblem(401)
+        .WithName("DeleteRelations")
+        .Produces(204);
     }
 
     private static async Task<ICollection<RelationModel>> AddRelation(

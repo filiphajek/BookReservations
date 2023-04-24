@@ -25,21 +25,23 @@ public class AccountFacade : IAccountFacade
         this.hashService = hashService;
     }
 
+    public async Task<UserJwtLoginResponse> JwtLoginUserAsync(UserLoginModel model, CancellationToken cancellationToken = default)
+    {
+        var user = await TryLoginUserAsync(model, cancellationToken);
+        if (user is null)
+        {
+            return new(false, "");
+        }
+        return new(true, authService.GenerateJwt(user));
+    }
+
     public async Task<bool> LoginUserAsync(UserLoginModel model, CancellationToken cancellationToken = default)
     {
-        var user = (await mediator.Send(new SimpleQuery<UserModel, User>(
-            i => i.UserName == model.Login || i.Email == model.Login), cancellationToken)).FirstOrDefault();
-
-        if (user == null)
+        var user = await TryLoginUserAsync(model, cancellationToken);
+        if (user is null)
         {
             return false;
         }
-
-        if (!hashService.Verify(model.Password, user.Password))
-        {
-            return false;
-        }
-
         await authService.SignUserIn(user, cancellationToken: cancellationToken);
         return true;
     }
@@ -60,4 +62,23 @@ public class AccountFacade : IAccountFacade
         user.Role = BookReservationsRoles.User;
         return await RegisterAsync(user, cancellationToken);
     }
+
+    public async Task<UserModel?> TryLoginUserAsync(UserLoginModel model, CancellationToken cancellationToken = default)
+    {
+        var user = (await mediator.Send(new SimpleQuery<UserModel, User>(
+            i => i.UserName == model.Login || i.Email == model.Login), cancellationToken)).FirstOrDefault();
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        if (!hashService.Verify(model.Password, user.Password))
+        {
+            return null;
+        }
+
+        return user;
+    }
+
 }

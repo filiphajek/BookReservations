@@ -25,9 +25,14 @@ public class AdminMiniController : MiniController
                 return Results.Ok(result);
             }
             return Results.BadRequest(result);
-        }).AddEndpointFilter<ValidationFilter<UserModel>>();
+        }).AddEndpointFilter<ValidationFilter<UserModel>>()
+        .Produces<CreateUserResponse>()
+        .Produces<CreateUserResponse>(400)
+        .WithName("CreateUser");
 
         userGroup.MapDelete("", async ([FromBody] ICollection<int> userIds, IMediator mediator, CancellationToken cancellationToken)
-            => await mediator.Send(new DeleteCommand<User>(i => userIds.Contains(i.Id)), cancellationToken));
+            => await mediator.Send(new DeleteCommand<User>(i => userIds.Contains(i.Id)), cancellationToken))
+            .Produces(200)
+            .WithName("DeleteUser");
     }
 }

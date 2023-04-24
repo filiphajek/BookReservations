@@ -30,6 +30,7 @@ public class AuthMiniController : MiniController
         })
         .Produces<CreateUserResponse>()
         .ProducesProblem(404)
+        .WithName("Register")
         .AddEndpointFilter<ValidationFilter<UserRegistrationModel>>();
 
         endpoints.MapPost("login", async (UserLoginModel model, IAccountFacade facade, CancellationToken cancellationToken) =>
@@ -43,13 +44,30 @@ public class AuthMiniController : MiniController
         })
         .Produces(200)
         .ProducesProblem(404)
+        .WithName("Login")
+        .AddEndpointFilter<ValidationFilter<UserLoginModel>>();
+
+        endpoints.MapPost("loginjwt", async (UserLoginModel model, IAccountFacade facade, CancellationToken cancellationToken) =>
+        {
+            var login = await facade.JwtLoginUserAsync(model, cancellationToken);
+            if (!login.Success)
+            {
+                return Results.BadRequest(login);
+            }
+            return Results.Ok(login);
+        })
+        .Produces<UserJwtLoginResponse>(200)
+        .ProducesProblem(404)
+        .WithName("LoginJwt")
         .AddEndpointFilter<ValidationFilter<UserLoginModel>>();
 
         endpoints.MapPost("logout", async (IAccountFacade facade, CancellationToken cancellationToken) =>
         {
             await facade.LogoutUserAsync(cancellationToken);
             return Results.Ok();
-        }).RequireAuthorization();
+        })
+        .RequireAuthorization()
+        .WithName("Logout");
 
         endpoints.MapGet("userinfo", async (IMediator mediator, HttpContext httpContext) =>
         {
@@ -62,6 +80,8 @@ public class AuthMiniController : MiniController
             var result = (await mediator.Send(
                 new SimpleQuery<UserInfoModel, User>(i => i.Id == idClaim))).Single();
             return Results.Ok(result);
-        }).RequireAuthorization();
+        })
+        .RequireAuthorization()
+        .WithName("GetUserInfo");
     }
 }

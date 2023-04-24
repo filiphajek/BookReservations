@@ -19,6 +19,8 @@ public class BookMiniController : MiniController
         endpoints.MapGet("cached", async (IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken)
             => await mediator.Send(new SimpleQuery<BookModel, Book>(), cancellationToken))
             .AllowAnonymous()
+            .WithName("GetCachedBooks")
+            .Produces<ICollection<BookModel>>()
             .CacheOutput(nameof(OutputCachePolicy));
 
         endpoints.MapPost("filter", async ([FromBody] GetBooksContract contract, HttpContext httpContext, IMediator mediator, CancellationToken cancellationToken) =>
@@ -35,15 +37,24 @@ public class BookMiniController : MiniController
                 contract.Page, contract.AuthorIds ?? new List<int>(), contract.OnlyAvailable, contract.PageSize, contract.OrderBy, contract.IsAscending, contract.SearchText),
                     cancellationToken);
             return Results.Ok(books);
-        }).AllowAnonymous();
+        })
+        .AllowAnonymous()
+        .WithName("GetBooks")
+        .Produces<PaginatedQueryResult<BookModel>>();
 
         endpoints.MapPut("", async ([FromBody] ICollection<BookModel> models, IMediator mediator, CancellationToken cancellationToken)
             => await mediator.Send(new UpdateBooksCommand(models),
-                cancellationToken)).RequireAuthorization(BookReservationsPolicies.CanUpdateBookReservationPolicy);
+                cancellationToken))
+                    .RequireAuthorization(BookReservationsPolicies.CanUpdateBookReservationPolicy)
+                    .WithName("UpdateBooks")
+                    .Produces(200);
 
         endpoints.MapGet("{bookId}", async ([FromRoute] int bookId, IMediator mediator, CancellationToken cancellationToken)
             => (await mediator.Send(new SimpleQuery<BookDetailModel, Book>(i => i.Id == bookId),
-                cancellationToken)).FirstOrDefault()).AllowAnonymous();
+                cancellationToken)).FirstOrDefault())
+            .AllowAnonymous()
+            .WithName("GetBookDetail")
+            .Produces(200);
 
         endpoints.MapGet("{bookId}/userInfo", async ([FromRoute] int bookId, IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
@@ -54,7 +65,11 @@ public class BookMiniController : MiniController
             }
             var result = await mediator.Send(new GetUserBookInfoQuery(userId.Value, bookId), cancellationToken);
             return Results.Ok(result);
-        }).RequireAuthorization(BookReservationsPolicies.UserPolicy);
+        })
+        .RequireAuthorization(BookReservationsPolicies.UserPolicy)
+        .WithName("GetUserBooks")
+        .ProducesProblem(401)
+        .Produces<BookUserInfoModel>();
 
         endpoints.MapGet("{bookId}/isAvailable", async ([FromRoute] int bookId, IMediator mediator, CancellationToken cancellationToken) =>
             {
@@ -64,11 +79,19 @@ public class BookMiniController : MiniController
                     return Results.NotFound();
                 }
                 return result.IsAvailable ? Results.Ok() : Results.NoContent();
-            }).RequireAuthorization();
+            })
+            .RequireAuthorization()
+            .WithName("IsBookAvailable")
+            .ProducesProblem(404)
+            .Produces(200)
+            .Produces(204);
 
         endpoints.MapPost("reservation", async ([FromBody] MakeReservationModel reservation, IMediator mediator, CancellationToken cancellationToken)
             => await mediator.Send(new CreateReservationCommand(reservation),
-                cancellationToken)).RequireAuthorization(BookReservationsPolicies.UserPolicy);
+                cancellationToken))
+            .RequireAuthorization(BookReservationsPolicies.UserPolicy)
+            .WithName("MakeReservation")
+            .Produces<CreateReservationResponse>();
 
         endpoints.MapDelete("{bookId}/reviews/{reviewId}", async ([FromRoute] int reviewId, IMediator mediator, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
@@ -84,7 +107,11 @@ public class BookMiniController : MiniController
             }
             await mediator.Send(new DeleteCommand<Review>(i => i.Id == reviewId), cancellationToken);
             return Results.NoContent();
-        }).RequireAuthorization();
+        })
+        .RequireAuthorization()
+        .WithName("DeleteReview")
+        .Produces(204)
+        .ProducesProblem(401);
 
         endpoints.MapPost("{bookId}/reviews", async ([FromBody] ReviewModel model, IMediator mediator, HttpContext htttpContext, CancellationToken cancellationToken) =>
         {
@@ -104,6 +131,11 @@ public class BookMiniController : MiniController
                 return Results.Ok(result);
             }
             return Results.NoContent();
-        }).RequireAuthorization(BookReservationsPolicies.UserPolicy);
+        })
+        .RequireAuthorization(BookReservationsPolicies.UserPolicy)
+        .WithName("GetReviews")
+        .Produces<ICollection<ReviewModel>>()
+        .Produces(204)
+        .ProducesProblem(401);
     }
 }

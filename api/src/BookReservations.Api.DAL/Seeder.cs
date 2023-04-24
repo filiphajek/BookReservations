@@ -70,7 +70,7 @@ public class Seeder : ISeeder
                     j.TotalAmount = j.AvailableAmount + i.Random.Number(2, 4);
                     j.Id = globalIndex;
                     globalIndex++;
-                }).Generate(200);
+                }).Generate(50);
 
         globalIndex = 10;
 
@@ -84,7 +84,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(150);
+            .Generate(60);
 
         globalIndex = 10;
 
@@ -96,7 +96,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(270);
+            .Generate(70);
 
         foreach (var (book, index) in generatedBooks.Select((book, index) => (book, index + 10)))
         {
@@ -128,7 +128,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(800).Concat(new Faker<User>()
+            .Generate(20).Concat(new Faker<User>()
             .RuleFor(i => i.Role, i => BookReservationsRoles.Librarian)
             .RuleFor(i => i.FirstName, i => i.Person.FirstName)
             .RuleFor(i => i.LastName, i => i.Person.LastName)
@@ -140,7 +140,7 @@ public class Seeder : ISeeder
             {
                 j.Id = globalIndex;
                 globalIndex++;
-            }).Generate(8)).ToList();
+            }).Generate(3)).ToList();
 
         globalIndex = 10;
 
@@ -153,7 +153,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(150)
+            .Generate(40)
             .Concat(new Faker<Review>()
             .RuleFor(i => i.Rating, i => i.Random.Number(1, 5))
             .RuleFor(i => i.Text, i => i.Lorem.Sentences(i.Random.Number(1, 4)))
@@ -164,7 +164,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(350));
+            .Generate(60));
 
         globalIndex = 10;
 
@@ -179,7 +179,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(400)
+            .Generate(100)
             .Concat(new Faker<Reservation>()
             .RuleFor(i => i.Status, i => ReservationStatus.Cancelled)
             .RuleFor(i => i.From, i => i.Date.Past(1, new DateTime(2020, 1, 1)))
@@ -191,7 +191,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(100))
+            .Generate(50))
             .Concat(new Faker<Reservation>()
             .RuleFor(i => i.Status, i => ReservationStatus.Returned)
             .RuleFor(i => i.From, i => i.Date.Past(1, new DateTime(2021, 1, 1)))
@@ -203,7 +203,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(800));
+            .Generate(80));
 
         globalIndex = 10;
 
@@ -216,7 +216,7 @@ public class Seeder : ISeeder
                 j.Id = globalIndex;
                 globalIndex++;
             })
-            .Generate(2000);
+            .Generate(300);
 
         generatedUsers.AddRange(new[]
         {
