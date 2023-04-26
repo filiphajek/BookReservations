@@ -6,8 +6,10 @@ using BookReservations.Api.Extensions;
 using BookReservations.Api.Middlewares;
 using BookReservations.Api.Services;
 using BookReservations.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
@@ -22,7 +24,28 @@ builder.Services.Configure<JsonOptions>(o => o.SerializerOptions.Converters.Add(
 builder.Services.Configure<MvcJsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "BookReservations API", Version = "v1" });
+    var securitySchema = new OpenApiSecurityScheme
+    {
+        Description = "Using the Authorization header with the Bearer scheme.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = JwtBearerDefaults.AuthenticationScheme
+        }
+    };
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securitySchema);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { securitySchema, new[] { JwtBearerDefaults.AuthenticationScheme } }
+    });
+});
 
 builder.Services.AddHttpContextAccessor();
 
@@ -51,6 +74,7 @@ builder.Services.AddAuthorization(i =>
 {
     i.AddPolicy(BookReservationsPolicies.AdminPolicy, p =>
     {
+        p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default" };
         p.RequireRole(BookReservationsRoles.Admin)
         .RequireAuthenticatedUser();
     });

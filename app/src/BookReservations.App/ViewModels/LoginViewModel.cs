@@ -1,20 +1,21 @@
-﻿using BookReservations.Api.Client;
+﻿using BookReservations.App.BL.Services;
+using BookReservations.App.Messages;
+using BookReservations.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using IdentityModel.Client;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookReservations.App.ViewModels;
 
 public partial class LoginViewModel : ObservableValidator, IViewModel
 {
-    private readonly ISecureStorage secureStorage;
-    private readonly IApiClient apiClient;
+    private readonly ILoginService loginService;
+    private readonly IMessengerService messengerService;
 
-    public LoginViewModel(ISecureStorage secureStorage, IApiClient apiClient)
+    public LoginViewModel(ILoginService loginService, IMessengerService messengerService)
     {
-        this.secureStorage = secureStorage;
-        this.apiClient = apiClient;
+        this.loginService = loginService;
+        this.messengerService = messengerService;
     }
 
     [Required(ErrorMessage = "Username is required!")]
@@ -30,32 +31,17 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
     [RelayCommand(CanExecute = nameof(CanLogin))]
     private async Task LoginAsync(string password)
     {
-        var tmp = await apiClient.LoginJwtAsync(new()
-        {
-            Login = Username,
-            Password = password
-        });
-
-        // todo service .. BL layer
-        if (tmp.Result.Success)
-        {
-            await secureStorage.SetAsync("token", tmp.Result.Token);
-            ((ApiClient)apiClient).HttpClient.SetBearerToken(tmp.Result.Token);
-        }
+        var tmp = await loginService.LoginAsync(Username, password);
+        messengerService.Send(new LoginMesage(tmp));
 
         ValidateAllProperties();
 
+        //todo validace .. CustomValidation https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/3750
         Error = string.Empty;
         if (HasErrors)
         {
             Error = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
         }
-
-        //var tmp = (GetErrors()
-        //    .ToDictionary(k => k.MemberNames.First(), v => v.ErrorMessage)
-        //    ?? new Dictionary<string, string?>()).TryGetValue(nameof(Text), out var error);
-
-        await Task.Delay(10);
     }
 
     public Task InitializeAsync() => Task.CompletedTask;

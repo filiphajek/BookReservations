@@ -58,6 +58,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\api\src\BookReservations.Api.Client\BookReservations.Api.Client.csproj" />
+	  <ProjectReference Include="..\BookReservations.App.BL\BookReservations.App.BL.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

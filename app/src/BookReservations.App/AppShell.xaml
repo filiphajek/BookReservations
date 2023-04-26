@@ -4,11 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BookReservations.App"
-    xmlns:views="clr-namespace:BookReservations.App.Views"
-    xmlns:viewModels="clr-namespace:BookReservations.App.ViewModels"
-    Shell.FlyoutBehavior="Flyout">
-
-    <!-- todo use Shell.FlyoutBehavior -->
+    xmlns:views="clr-namespace:BookReservations.App.Views">
 
     <Shell.FlyoutHeader>
         <Grid HorizontalOptions="Start">
@@ -31,13 +27,9 @@
             </Grid>
         </DataTemplate>
     </Shell.ItemTemplate>
-    
+
     <FlyoutItem Title="Books">
         <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="Login">
-        <ShellContent Title="Login" ContentTemplate="{DataTemplate views:LoginPage}" Route="login"/>
     </FlyoutItem>
 
 </Shell>

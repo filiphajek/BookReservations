@@ -31,7 +31,13 @@ public class AuthService : IAuthService
         return jwtSecurityTokenHandler.WriteToken(new JwtSecurityToken(
             authServiceOptions.Issuer,
             authServiceOptions.Audience,
-            new Claim[] { new Claim(ClaimTypes.Name, user.UserName) },
+            new Claim[]
+            {
+                new Claim(BookReservationsClaimTypes.UserId, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role),
+            },
             null,
             DateTime.UtcNow.AddHours(1), credentials));
 

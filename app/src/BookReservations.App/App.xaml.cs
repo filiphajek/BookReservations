@@ -1,12 +1,20 @@
-﻿namespace BookReservations.App;
+﻿using BookReservations.App.Messages;
+using BookReservations.App.Services;
+using BookReservations.App.ViewModels;
+using BookReservations.App.Views;
+
+namespace BookReservations.App;
 
 public partial class App : Application
 {
-    public App()
+    public App(IMessengerService messengerService, LoginViewModel vm)
     {
         InitializeComponent();
-
-        MainPage = new AppShell();
+        messengerService.Register<LoginMesage>(i =>
+        {
+            MainPage = new AppShell();
+        });
+        MainPage = new LoginPage(vm);
     }
 
     protected override Window CreateWindow(IActivationState activationState)
