@@ -1,5 +1,6 @@
 ﻿using BookReservations.Api.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 
 namespace BookReservations.App.ViewModels;
@@ -24,5 +25,14 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
             PageSize = 20
         });
         Books = new(response.Result.Data);
+    }
+
+    [RelayCommand]
+    private async Task GoToDetail(int id)
+    {
+        await Shell.Current.GoToAsync("detail", new Dictionary<string, object>
+        {
+            [nameof(BookViewModel.Id)] = id
+        });
     }
 }

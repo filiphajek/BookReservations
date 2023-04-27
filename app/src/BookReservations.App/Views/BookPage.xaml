@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vw:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="BookReservations.App.Views.BookPage"
+                    xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
+                    x:DataType="vm:BookViewModel"
+                    xmlns:vw="clr-namespace:BookReservations.App.Views"
+                    Title="Book">
+    <VerticalStackLayout>
+        <Label 
+            Text="{Binding Book.Name}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</vw:BaseContentPage>

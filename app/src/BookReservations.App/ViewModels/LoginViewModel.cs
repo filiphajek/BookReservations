@@ -44,5 +44,17 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
         }
     }
 
+    [RelayCommand]
+    private async Task MsSignOnAsync()
+    {
+        await Task.Delay(10);
+    }
+
+    [RelayCommand]
+    private async Task GoogleSignOnAsync()
+    {
+        await Task.Delay(10);
+    }
+
     public Task InitializeAsync() => Task.CompletedTask;
 }

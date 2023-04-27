@@ -45,6 +45,8 @@ public static class MauiProgram
             .AsImplementedInterfaces()
             .WithTransientLifetime());
 
+        Routing.RegisterRoute("books/detail", typeof(BookPage));
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

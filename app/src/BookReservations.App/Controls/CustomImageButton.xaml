@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookReservations.App.Controls.CustomImageButton">
+    <ContentView.ControlTemplate>
+        <ControlTemplate>
+            <Frame BackgroundColor="{TemplateBinding Color}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{TemplateBinding Command}" NumberOfTapsRequired="1"/>
+                </Frame.GestureRecognizers>
+                
+                <Grid ColumnDefinitions="auto,*">
+                    <Image Grid.Column="0" HeightRequest="35" WidthRequest="35" Source="{TemplateBinding Image}" >
+                        <!--<Image.Source>
+                            <UriImageSource Uri="{TemplateBinding Image}" CacheValidity="10:00:00:00"/>
+                        </Image.Source>-->
+                    </Image>
+                <ContentPresenter Grid.Column="1"/>
+                </Grid>
+            </Frame>
+        </ControlTemplate>
+    </ContentView.ControlTemplate>
+</ContentView>

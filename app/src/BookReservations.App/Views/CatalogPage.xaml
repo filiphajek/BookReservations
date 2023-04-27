@@ -6,17 +6,29 @@
                     xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
                     x:DataType="vm:CatalogViewModel"
                     x:Class="BookReservations.App.Views.CatalogPage"
+                    x:Name="Catalog"
                     Title="Catalog">
+    
     <Grid>
         <CollectionView ItemsSource="{Binding Books}">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
             </CollectionView.ItemsLayout>
+            <CollectionView.EmptyViewTemplate>
+                <DataTemplate>
+                    <Label Text="No books found"/>
+                </DataTemplate>
+            </CollectionView.EmptyViewTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="api:BookModel">
-                    <!--<Grid RowDefinitions="auto,auto" RowSpacing="10">
-                    </Grid>-->
-                    <Label Text="{Binding Name}"/>
+                    <Grid RowDefinitions="auto,auto" RowSpacing="10">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Source={x:Reference Catalog}, Path=BindingContext.GoToDetailCommand}"
+                                CommandParameter="{Binding Id}" />
+                        </Grid.GestureRecognizers>
+                        <Label Text="{Binding Name}"/>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
