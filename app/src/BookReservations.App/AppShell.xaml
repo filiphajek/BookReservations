@@ -4,32 +4,72 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BookReservations.App"
+    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
+    xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vw="clr-namespace:BookReservations.App.ViewModels"
     xmlns:views="clr-namespace:BookReservations.App.Views">
 
     <Shell.FlyoutHeader>
-        <Grid HorizontalOptions="Start">
-            <Image HeightRequest="50"
-                   HorizontalOptions="Start"
-                   Source="/Images/dotnet_bot.svg"
-                   Margin="0, 10, 0, 0"/>
-        </Grid>
+        <VerticalStackLayout x:DataType="vw:UserCardViewModel"> <!--zkusit zde binding context a to VM poslat do custom controlky TODO-->
+            <Grid HorizontalOptions="Start" RowDefinitions="auto, auto, auto" RowSpacing="10" Margin="20">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToUserDetailCommand}" NumberOfTapsRequired="1"/>
+                </Grid.GestureRecognizers>
+                <toolkit:AvatarView Grid.Row="0" Text="ZS" />
+                <Label Grid.Row="1" Text="{Binding Username}"/>
+                <Label Grid.Row="2" Text="{Binding Email}"/>
+            </Grid>
+            <VerticalStackLayout Margin="0,0,0,20">
+                <Line X1="0"
+                      Y1="0"
+                      X2="500"
+                      Y2="0"
+                      Stroke="white" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
-    <Shell.ItemTemplate>
-        <DataTemplate>
-            <Grid ColumnDefinitions="20, *"
-                  ColumnSpacing="10"
-                  Padding="10">
+    <Shell.FlyoutFooter>
+        <Button Text="About" Margin="20"/>
+    </Shell.FlyoutFooter>
+    
+    <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" FlyoutItemIsVisible="False"/>
 
-                <Label Grid.Column="1" Text="{Binding Title}"
-                       VerticalOptions="Center"
-                       TextColor="White"/>
-            </Grid>
-        </DataTemplate>
-    </Shell.ItemTemplate>
+    <FlyoutItem Title="{x:Static t:ShellTexts.Books_Title}">
+        <FlyoutItem.Icon>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Book}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+        </FlyoutItem.Icon>
 
-    <FlyoutItem Title="Books">
-        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
+        <Tab Title="{x:Static t:ShellTexts.Books_Title}">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Book}"/>
+            </Tab.Icon>
+            <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
+        </Tab>
+
+        <Tab Title="{x:Static t:ShellTexts.Reservations_Title}">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Ticket}"/>
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate views:ReservationsPage}" Route="reservations" />
+        </Tab>
     </FlyoutItem>
 
+    <FlyoutItem Title="{x:Static t:ShellTexts.Reservations_Title}">
+        <FlyoutItem.Icon>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Ticket}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+        </FlyoutItem.Icon>
+
+        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:ReservationsPage}" Route="reservations" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="{x:Static t:ShellTexts.Settings_Title}">
+        <FlyoutItem.Icon>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Cog}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+        </FlyoutItem.Icon>
+
+        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:SettingsPage}" Route="settings" />
+    </FlyoutItem>
+    
 </Shell>

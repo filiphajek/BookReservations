@@ -1,6 +1,5 @@
 ﻿using BookReservations.App.BL.Services;
-using BookReservations.App.Messages;
-using BookReservations.App.Services;
+using BookReservations.App.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel.DataAnnotations;
@@ -10,12 +9,10 @@ namespace BookReservations.App.ViewModels;
 public partial class LoginViewModel : ObservableValidator, IViewModel
 {
     private readonly ILoginService loginService;
-    private readonly IMessengerService messengerService;
 
-    public LoginViewModel(ILoginService loginService, IMessengerService messengerService)
+    public LoginViewModel(ILoginService loginService)
     {
         this.loginService = loginService;
-        this.messengerService = messengerService;
     }
 
     [Required(ErrorMessage = "Username is required!")]
@@ -32,7 +29,8 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
     private async Task LoginAsync(string password)
     {
         var tmp = await loginService.LoginAsync(Username, password);
-        messengerService.Send(new LoginMesage(tmp));
+
+        await Shell.Current.GoToAsync("catalog");
 
         ValidateAllProperties();
 
@@ -42,6 +40,12 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
         {
             Error = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
         }
+    }
+
+    [RelayCommand]
+    private async Task SignOnAsync()
+    {
+        await Shell.Current.GoToAsync(SignUpPage.Route);
     }
 
     [RelayCommand]

@@ -1,9 +1,21 @@
-﻿namespace BookReservations.App;
+﻿using BookReservations.App.ViewModels;
+
+namespace BookReservations.App;
 
 public partial class AppShell : Shell
 {
-    public AppShell()
+    private readonly IViewModel _viewModel;
+
+    public AppShell(UserCardViewModel userViewModel)
     {
         InitializeComponent();
+        _viewModel = userViewModel;
+        BindingContext = userViewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.InitializeAsync();
     }
 }

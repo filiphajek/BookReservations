@@ -8,7 +8,13 @@
                     x:Class="BookReservations.App.Views.CatalogPage"
                     x:Name="Catalog"
                     Title="Catalog">
-    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+          IsEnabled="False"
+          IsVisible="False">
+        </BackButtonBehavior>
+    </Shell.BackButtonBehavior>
+
     <Grid>
         <CollectionView ItemsSource="{Binding Books}">
             <CollectionView.ItemsLayout>
