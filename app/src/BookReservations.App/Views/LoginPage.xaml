@@ -56,13 +56,8 @@
             </StackLayout>
 
             <Grid ColumnDefinitions="*, *, *">
-                <Button Grid.Column="0" Margin="0,15" BackgroundColor="{StaticResource SecondaryColor}"
-                    Text="Sign in" TextColor="{StaticResource PrimaryColor}" FontFamily="OpenSansBold" 
-                    Command="{Binding LoginCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}"/>
-
-                <Button Grid.Column="2" Margin="0,15" BackgroundColor="{StaticResource SecondaryColor}"
-                    Text="Sign on" TextColor="{StaticResource PrimaryColor}" FontFamily="OpenSansBold" 
-                    Command="{Binding SignOnCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=usernameEntry}}"/>
+                <c:LoadingButton IsEnabled="False" Grid.Column="0" Margin="0,15" Command="{Binding LoginCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign in"/>
+                <c:LoadingButton Grid.Column="2" Margin="0,15" Command="{Binding SignOnCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign up"/>
             </Grid>
 
             <VerticalStackLayout Spacing="10">

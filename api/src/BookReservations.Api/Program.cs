@@ -8,6 +8,7 @@ using BookReservations.Api.Services;
 using BookReservations.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -68,13 +69,19 @@ builder.Services.AddAuthentication("default")
         ValidateLifetime = true,
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration[$"{nameof(AuthServiceOptions)}:{nameof(AuthServiceOptions.SecretKey)}"]!))
-    });
+    })
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"), "BearerMsal")
+    .EnableTokenAcquisitionToCallDownstreamApi()
+    .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+    .AddInMemoryTokenCaches()
+    .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
+    .AddInMemoryTokenCaches();
 
 builder.Services.AddAuthorization(i =>
 {
     i.AddPolicy(BookReservationsPolicies.AdminPolicy, p =>
     {
-        p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default" };
+        p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default", "BearerMsal" };
         p.RequireRole(BookReservationsRoles.Admin)
         .RequireAuthenticatedUser();
     });

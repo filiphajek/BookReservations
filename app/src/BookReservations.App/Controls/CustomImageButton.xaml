@@ -17,6 +17,7 @@
                     </Image>
                 <ContentPresenter Grid.Column="1"/>
                 </Grid>
+                
             </Frame>
         </ControlTemplate>
     </ContentView.ControlTemplate>
