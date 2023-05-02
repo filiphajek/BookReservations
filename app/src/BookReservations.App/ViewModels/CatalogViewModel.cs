@@ -12,19 +12,62 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
     public CatalogViewModel(IApiClient apiClient)
     {
         this.apiClient = apiClient;
+        PropertyChanged += FilterPropertyChanged;
     }
+
+    private async void FilterPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (IsRefreshing)
+        {
+            return;
+        }
+
+        if (e.PropertyName == nameof(Ascending) || e.PropertyName == nameof(IsAvailable) || e.PropertyName == nameof(SearchText))
+        {
+            await RefreshAsync();
+        }
+    }
+
+    [ObservableProperty]
+    private bool isRefreshing = true;
+
+    [ObservableProperty]
+    private bool ascending = true;
+
+    [ObservableProperty]
+    private bool isAvailable = true;
+
+    [ObservableProperty]
+    private string searchText = "";
 
     [ObservableProperty]
     private ObservableCollection<BookModel> books = new();
 
-    public async Task InitializeAsync()
+    private int page = 1;
+    private bool hasAllPages = false;
+
+    public Task InitializeAsync() => GetBookAsync();
+
+    [RelayCommand]
+    private async Task LoadNextPageAsync()
     {
-        var response = await apiClient.GetBooksAsync(new GetBooksContract
+        page++;
+        IsRefreshing = true;
+        await GetBookAsync();
+        IsRefreshing = false;
+    }
+
+    [RelayCommand]
+    private async Task RefreshAsync()
+    {
+        if (IsRefreshing)
         {
-            Page = 1,
-            PageSize = 20
-        });
-        Books = new(response.Result.Data);
+            return;
+        }
+        page = 1;
+        hasAllPages = false;
+        Books.Clear();
+        await InitializeAsync();
     }
 
     [RelayCommand]
@@ -34,5 +77,35 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
         {
             [nameof(BookViewModel.Id)] = id
         });
+    }
+
+    private async Task GetBookAsync()
+    {
+        if (hasAllPages)
+        {
+            return;
+        }
+
+        IsRefreshing = true;
+        var response = await apiClient.GetBooksAsync(new GetBooksContract
+        {
+            Page = page,
+            PageSize = 20,
+            IsAscending = Ascending,
+            OnlyAvailable = IsAvailable,
+            SearchText = SearchText,
+            OrderBy = nameof(BookModel.Name),
+        });
+
+        if (response.Result.TotalCount == Books.Count)
+        {
+            hasAllPages = true;
+        }
+
+        foreach (var item in response.Result.Data)
+        {
+            Books.Add(item);
+        }
+        IsRefreshing = false;
     }
 }

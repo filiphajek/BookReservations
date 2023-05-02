@@ -8,6 +8,7 @@
     xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vw="clr-namespace:BookReservations.App.ViewModels"
+    FlyoutBackgroundColor="{DynamicResource PrimaryColor}"
     xmlns:views="clr-namespace:BookReservations.App.Views">
 
     <Shell.FlyoutHeader>
@@ -18,7 +19,7 @@
                 </Grid.GestureRecognizers>
                 <toolkit:AvatarView Grid.Row="0" Text="ZS" />
                 <Label Grid.Row="1" Text="{Binding Username}"/>
-                <Label Grid.Row="2" Text="{Binding Email}"/>
+                <Label Grid.Row="2" Text="{Binding Email}" />
             </Grid>
             <VerticalStackLayout Margin="0,0,0,20">
                 <Line X1="0"
@@ -31,29 +32,16 @@
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
-        <Button Text="About" Margin="20"/>
+        <Button TextColor="Black" Text="About" Margin="20"/>
     </Shell.FlyoutFooter>
     
-    <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" FlyoutItemIsVisible="False"/>
+    <!--<ShellContent ContentTemplate="{DataTemplate views:LoginPage}" FlyoutItemIsVisible="False"/>-->
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Books_Title}">
         <FlyoutItem.Icon>
             <FontImageSource Glyph="{Static f:FontAwesomeIcons.Book}" FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
-
-        <Tab Title="{x:Static t:ShellTexts.Books_Title}">
-            <Tab.Icon>
-                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Book}"/>
-            </Tab.Icon>
             <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
-        </Tab>
-
-        <Tab Title="{x:Static t:ShellTexts.Reservations_Title}">
-            <Tab.Icon>
-                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Ticket}"/>
-            </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate views:ReservationsPage}" Route="reservations" />
-        </Tab>
     </FlyoutItem>
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Reservations_Title}">

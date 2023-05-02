@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BookReservations.App.LoginShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BookReservations.App"
+    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
+    xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vw="clr-namespace:BookReservations.App.ViewModels"
+    Shell.FlyoutBehavior="Disabled"
+    xmlns:views="clr-namespace:BookReservations.App.Views">
+
+    <ShellContent ContentTemplate="{DataTemplate views:LoginPage}"/>
+    <ShellContent ContentTemplate="{DataTemplate views:SignUpPage}"/>
+</Shell>

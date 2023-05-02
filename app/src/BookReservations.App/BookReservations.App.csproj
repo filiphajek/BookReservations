@@ -77,13 +77,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="LoginShell.xaml.cs">
+	    <DependentUpon>LoginShell.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Controls\CustomImageButton.xaml.cs">
 	    <DependentUpon>CustomImageButton.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\Texts\ShellTexts.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>ShellTexts.resx</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\LoginPage.xaml.cs">
 	    <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -100,13 +98,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Resources\Texts\ShellTexts.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>ShellTexts.Designer.cs</LastGenOutput>
+	  <EmbeddedResource Update="Resources\Texts\ShellTexts.en.resx">
+	    <Generator></Generator>
 	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="LoginShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\CustomImageButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

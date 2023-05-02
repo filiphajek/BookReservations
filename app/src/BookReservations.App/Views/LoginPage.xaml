@@ -30,17 +30,18 @@
                            x:Name="usernameEntry"
                            Placeholder="Enter username" 
                            Margin="5,0"
-                           TextColor="White"
                            PlaceholderColor="Gray" 
+                           ToolTipProperties.Text="Enter the username (> 3 characters)"
                            Text="{Binding Username}" >
-                        <!--<Entry.Behaviors>
-                            <toolkit:TextValidationBehavior 
+                        <Entry.Behaviors>
+                            <toolkit:CharactersValidationBehavior 
                                 ValidStyle="{StaticResource ValidEntryStyle}"
                                 InvalidStyle="{StaticResource InvalidEntryStyle}"
                                 Flags="ValidateOnValueChanged"
-                                MinimumLength="2">
-                            </toolkit:TextValidationBehavior>
-                        </Entry.Behaviors>-->
+                                CharacterType="Any" 
+                                MinimumCharacterTypeCount="3">
+                            </toolkit:CharactersValidationBehavior>
+                        </Entry.Behaviors>
                     </Entry>
                 </Grid>
 
@@ -51,13 +52,12 @@
                     <Entry x:Name="password"  BackgroundColor="Transparent" Placeholder="Enter password" 
                            TextColor="White" Margin="5,0"
                            PlaceholderColor="Gray" IsPassword="True" />
-
                 </Grid>
             </StackLayout>
 
-            <Grid ColumnDefinitions="*, *, *">
-                <c:LoadingButton IsEnabled="False" Grid.Column="0" Margin="0,15" Command="{Binding LoginCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign in"/>
-                <c:LoadingButton Grid.Column="2" Margin="0,15" Command="{Binding SignOnCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign up"/>
+            <Grid ColumnDefinitions="2*, *, 2*">
+                <c:LoadingButton Grid.Column="0" Margin="0,15" Command="{Binding LoginCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign in"/>
+                <Button Grid.Column="2" Margin="0,15" Command="{Binding SignOnCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign up"/>
             </Grid>
 
             <VerticalStackLayout Spacing="10">
@@ -65,7 +65,7 @@
                     <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="17" Text="Sign in with Microsoft"/>
                 </c:CustomImageButton>
 
-                <c:CustomImageButton Image="googlelogo.png" Command="{Binding GoogleSignOnCommand}" Color="{StaticResource PrimaryColor}">
+                <c:CustomImageButton Image="googlelogo.png" Command="{Binding GoogleSignOnCommand}" Color="{StaticResource Gray500}">
                     <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="17" Text="Sign in with Google"/>
                 </c:CustomImageButton>
             </VerticalStackLayout>

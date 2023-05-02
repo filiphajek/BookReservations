@@ -4,12 +4,53 @@
                     x:Class="BookReservations.App.Views.BookPage"
                     xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
                     x:DataType="vm:BookViewModel"
+                    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
-                    Title="Book">
-    <VerticalStackLayout>
-        <Label 
-            Text="{Binding Book.Name}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+                    Title="{Binding Book.Name}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem>
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Plus}" Size="30" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
+    <Grid RowDefinitions="2*, 3*, auto">
+        <Image Grid.Row="0"
+               Aspect="AspectFit"
+               BackgroundColor="Gray">
+            <Image.Source>
+                <UriImageSource Uri="{Binding Book.Image}"/>
+            </Image.Source>
+        </Image>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout>
+                <Label Text="Description" Margin="7,7,7,0" FontAttributes="Bold"/>
+                <Label FontSize="Body"
+                       Text="{Binding Book.Description}"
+                       Margin="16"/>
+                <Label Text="Authors" Margin="7,7,7,0" FontAttributes="Bold"/>
+                <CollectionView ItemsSource="{Binding Book.Authors}">
+                    <CollectionView.ItemTemplate x:DataType="api:AuthorModel">
+                        <DataTemplate>
+                            <Label Margin="5">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="FirstName" />
+                                        <Binding Path="LastName" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label Text="Reviews" Margin="7,7,7,0" FontAttributes="Bold"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+
+
 </vw:BaseContentPage>

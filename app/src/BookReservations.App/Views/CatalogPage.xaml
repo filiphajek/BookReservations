@@ -6,37 +6,64 @@
                     xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
                     x:DataType="vm:CatalogViewModel"
                     x:Class="BookReservations.App.Views.CatalogPage"
+                    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                     x:Name="Catalog"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    xmlns:c="clr-namespace:BookReservations.App.Controls"
                     Title="Catalog">
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior
-          IsEnabled="False"
-          IsVisible="False">
-        </BackButtonBehavior>
-    </Shell.BackButtonBehavior>
+    
+    <Grid RowDefinitions="auto, *">
+        <Grid Margin="10" RowDefinitions="auto, auto" ColumnDefinitions="auto,*,auto">
+            <Entry Placeholder="Search book" Text="{Binding SearchText}" Grid.ColumnSpan="3" Grid.Column="0"/>
 
-    <Grid>
-        <CollectionView ItemsSource="{Binding Books}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.EmptyViewTemplate>
-                <DataTemplate>
-                    <Label Text="No books found"/>
-                </DataTemplate>
-            </CollectionView.EmptyViewTemplate>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="api:BookModel">
-                    <Grid RowDefinitions="auto,auto" RowSpacing="10">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer 
+            <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0">
+                <Label Text="Is available" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding IsAvailable}"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0" Grid.Column="2">
+                <Label Text="Order descending" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding Ascending}"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+            <CollectionView 
+                    ItemsSource="{Binding Books}"
+                    Scrolled="CollectionViewScrolled"
+                    ItemsUpdatingScrollMode="KeepLastItemInView"
+                    RemainingItemsThreshold="0"
+                    RemainingItemsThresholdReachedCommand="{Binding LoadNextPageCommand}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label Text="No books found"/>
+                    </DataTemplate>
+                </CollectionView.EmptyViewTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="api:BookModel">
+                        <Border Margin="10,0,10,5" BackgroundColor="Transparent" Stroke="gray" StrokeThickness="1">
+                            <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto, *" RowSpacing="10" ColumnSpacing="10">
+                                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" WidthRequest="100" HeightRequest="100">
+                                    <Image.Source>
+                                        <UriImageSource Uri="{Binding Image}"/>
+                                    </Image.Source>
+                                </Image>
+
+                                <Label Grid.Column="1" FontSize="20" Text="{Binding Name}"/>
+                                <Label Grid.Column="1" Grid.Row="1" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation"/>
+                            </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer 
                                 Command="{Binding Source={x:Reference Catalog}, Path=BindingContext.GoToDetailCommand}"
                                 CommandParameter="{Binding Id}" />
-                        </Grid.GestureRecognizers>
-                        <Label Text="{Binding Name}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
     </Grid>
 </vw:BaseContentPage>

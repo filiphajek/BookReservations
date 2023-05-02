@@ -2,14 +2,10 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Style x:Key="ValidEntryStyle" TargetType="Entry">
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
     </Style>
 
     <Style x:Key="InvalidEntryStyle" TargetType="Entry">
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}"/>
+        <Setter Property="TextColor" Value="{StaticResource ErrorColor}"/>
     </Style>
 </ResourceDictionary>

@@ -6,6 +6,7 @@
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
                     xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
                     Title="ReservationsPage">
+
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"

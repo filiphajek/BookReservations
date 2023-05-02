@@ -22,7 +22,8 @@ namespace BookReservations.App.Resources.Texts {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ShellTexts {
+    public class ShellTexts
+    {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +37,7 @@ namespace BookReservations.App.Resources.Texts {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BookReservations.App.Resources.Texts.ShellTexts", typeof(ShellTexts).Assembly);
@@ -51,7 +52,7 @@ namespace BookReservations.App.Resources.Texts {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,27 +62,29 @@ namespace BookReservations.App.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Books.
+        ///   Looks up a localized string similar to Apply.
         /// </summary>
-        internal static string Books_Title {
+        public static string Books_Title {
             get {
                 return ResourceManager.GetString("Books_Title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reservations.
+        ///   Looks up a localized string similar to Change the localization of the application from the available options..
         /// </summary>
-        internal static string Reservations_Title {
+        public static string Reservations_Title
+        {
             get {
                 return ResourceManager.GetString("Reservations_Title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings.
+        ///   Looks up a localized string similar to Language.
         /// </summary>
-        internal static string Settings_Title {
+        public static string Settings_Title
+        {
             get {
                 return ResourceManager.GetString("Settings_Title", resourceCulture);
             }
