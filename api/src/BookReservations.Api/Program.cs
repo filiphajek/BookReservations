@@ -87,11 +87,13 @@ builder.Services.AddAuthorization(i =>
     });
     i.AddPolicy(BookReservationsPolicies.LibrarianPolicy, p =>
     {
+        p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default", "BearerMsal" };
         p.RequireRole(BookReservationsRoles.Librarian)
         .RequireAuthenticatedUser();
     });
     i.AddPolicy(BookReservationsPolicies.UserPolicy, p =>
     {
+        p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default", "BearerMsal" };
         p.RequireRole(BookReservationsRoles.User)
         .RequireAuthenticatedUser();
     });
@@ -107,6 +109,7 @@ builder.Services.AddAuthorization(i =>
     });
     i.AddPolicy(BookReservationsPolicies.ProfilePolicy, p =>
     {
+        p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default", "BearerMsal" };
         p.RequireRole(BookReservationsRoles.Librarian, BookReservationsRoles.User)
         .RequireAuthenticatedUser();
     });

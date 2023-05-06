@@ -19,6 +19,7 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
     {
         if (IsRefreshing)
         {
+            await Task.Delay(400);
             return;
         }
 
@@ -52,18 +53,12 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
     private async Task LoadNextPageAsync()
     {
         page++;
-        IsRefreshing = true;
         await GetBookAsync();
-        IsRefreshing = false;
     }
 
     [RelayCommand]
     private async Task RefreshAsync()
     {
-        if (IsRefreshing)
-        {
-            return;
-        }
         page = 1;
         hasAllPages = false;
         Books.Clear();
@@ -102,7 +97,8 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
             hasAllPages = true;
         }
 
-        foreach (var item in response.Result.Data)
+        var existingids = Books.Select(i => i.Id).ToArray();
+        foreach (var item in response.Result.Data.Where(i => !existingids.Contains(i.Id)))
         {
             Books.Add(item);
         }

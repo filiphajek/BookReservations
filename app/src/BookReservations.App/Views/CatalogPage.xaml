@@ -18,21 +18,20 @@
 
             <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0">
                 <Label Text="Is available" VerticalOptions="Center"/>
-                <CheckBox IsChecked="{Binding IsAvailable}"/>
+                <CheckBox IsChecked="{Binding IsAvailable}" Color="White"/>
             </HorizontalStackLayout>
 
             <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0" Grid.Column="2">
                 <Label Text="Order descending" VerticalOptions="Center"/>
-                <CheckBox IsChecked="{Binding Ascending}"/>
+                <CheckBox IsChecked="{Binding Ascending}" Color="White"/>
             </HorizontalStackLayout>
         </Grid>
 
         <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+            <!--Scrolled="CollectionViewScrolled"-->
             <CollectionView 
                     ItemsSource="{Binding Books}"
-                    Scrolled="CollectionViewScrolled"
-                    ItemsUpdatingScrollMode="KeepLastItemInView"
-                    RemainingItemsThreshold="0"
+                    RemainingItemsThreshold="1"
                     RemainingItemsThresholdReachedCommand="{Binding LoadNextPageCommand}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
@@ -46,11 +45,25 @@
                     <DataTemplate x:DataType="api:BookModel">
                         <Border Margin="10,0,10,5" BackgroundColor="Transparent" Stroke="gray" StrokeThickness="1">
                             <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto, *" RowSpacing="10" ColumnSpacing="10">
-                                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" WidthRequest="100" HeightRequest="100">
-                                    <Image.Source>
-                                        <UriImageSource Uri="{Binding Image}"/>
-                                    </Image.Source>
-                                </Image>
+
+                                <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" RowDefinitions="*, auto"  WidthRequest="110" HeightRequest="110">
+                                    <Image Grid.Row="0">
+                                        <Image.Source>
+                                            <UriImageSource Uri="{Binding Image}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <HorizontalStackLayout Grid.Row="1">
+                                        <Label Text="Available" FontAttributes="Bold" TextColor="Green" FontSize="13" VerticalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsAvailable}" Value="False">
+                                                    <Setter Property="TextColor" Value="Red" />
+                                                    <Setter Property="Text" Value="Not available" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Grid>
 
                                 <Label Grid.Column="1" FontSize="20" Text="{Binding Name}"/>
                                 <Label Grid.Column="1" Grid.Row="1" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation"/>

@@ -80,7 +80,7 @@ public class BookMiniController : MiniController
                 }
                 return result.IsAvailable ? Results.Ok() : Results.NoContent();
             })
-            .RequireAuthorization()
+            .AllowAnonymous()
             .WithName("IsBookAvailable")
             .ProducesProblem(404)
             .Produces(200)
@@ -133,7 +133,7 @@ public class BookMiniController : MiniController
             return Results.NoContent();
         })
         .RequireAuthorization(BookReservationsPolicies.UserPolicy)
-        .WithName("GetReviews")
+        .WithName("AddReview")
         .Produces<ICollection<ReviewModel>>()
         .Produces(204)
         .ProducesProblem(401);

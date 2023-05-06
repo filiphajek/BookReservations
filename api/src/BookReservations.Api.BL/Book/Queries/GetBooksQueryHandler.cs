@@ -21,9 +21,9 @@ public class GetBooksQueryHandler : PaginatedQueryHandler<GetBooksQuery, BookMod
         var appliedQuery = ApplyMainFilters(query, request);
         if (request.OnlyAvailable)
         {
-            return appliedQuery.AndWhere(i => i.AvailableAmount > 0);
+            return appliedQuery.AndWhere(i => i.AvailableAmount > 0).OrderBy(request.SortBy, request.Ascending);
         }
-        return appliedQuery;
+        return appliedQuery.OrderBy(request.SortBy, request.Ascending);
     }
 
     private static IAfterWhereQuery<Book> ApplyMainFilters(IQuery<Book> query, GetBooksQuery request)

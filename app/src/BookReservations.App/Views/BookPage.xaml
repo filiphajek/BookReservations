@@ -4,8 +4,10 @@
                     x:Class="BookReservations.App.Views.BookPage"
                     xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
                     x:DataType="vm:BookViewModel"
+                    xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
                     xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
+                    xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
                     Title="{Binding Book.Name}">
 
     <ContentPage.ToolbarItems>
@@ -15,42 +17,75 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
-    <Grid RowDefinitions="2*, 3*, auto">
-        <Image Grid.Row="0"
+
+    <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+        <Grid RowDefinitions="2*, 4*, auto">
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Command="{Binding GoToReviewsCommand}"/>
+            </Grid.GestureRecognizers>
+            
+            <Image Grid.Row="0"
                Aspect="AspectFit"
                BackgroundColor="Gray">
-            <Image.Source>
-                <UriImageSource Uri="{Binding Book.Image}"/>
-            </Image.Source>
-        </Image>
+                <Image.Source>
+                    <UriImageSource Uri="{Binding Book.Image}"/>
+                </Image.Source>
+            </Image>
 
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout>
-                <Label Text="Description" Margin="7,7,7,0" FontAttributes="Bold"/>
-                <Label FontSize="Body"
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout>
+
+                    <HorizontalStackLayout Margin="7,0,0,0">
+                        <aloha:Rating Value="{Binding Rating}" IsEnabled="False"/>
+                        <Button Text="{Binding Book.Reviews.Count, StringFormat='{0} review(s)'}" Command="{Binding GoToReviewsCommand}"/>
+                    </HorizontalStackLayout>
+
+                    <Grid Margin="7" ColumnDefinitions="*,*,*">
+                        <Button BackgroundColor="Green" Command="{Binding ReservateOrSubscribeCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Book.IsAvailable}" Value="True">
+                                    <Setter Property="Text" Value="Reservate"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding Book.IsAvailable}" Value="False">
+                                    <Setter Property="Text" Value="Subscribe"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInReservations}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Grid.Column="2" Text="Add to wishlist" BackgroundColor="Green" Command="{Binding AddToWishlistCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInWishlist}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+
+                    <Label Text="Description" Margin="7,7,7,0" FontSize="Header" FontAttributes="Bold"/>
+                    <Label FontSize="Body"
                        Text="{Binding Book.Description}"
                        Margin="16"/>
-                <Label Text="Authors" Margin="7,7,7,0" FontAttributes="Bold"/>
-                <CollectionView ItemsSource="{Binding Book.Authors}">
-                    <CollectionView.ItemTemplate x:DataType="api:AuthorModel">
-                        <DataTemplate>
-                            <Label Margin="5">
-                                <Label.Text>
-                                    <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="FirstName" />
-                                        <Binding Path="LastName" />
-                                    </MultiBinding>
-                                </Label.Text>
-                            </Label>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <Label Text="Reviews" Margin="7,7,7,0" FontAttributes="Bold"/>
-            </VerticalStackLayout>
-        </ScrollView>
-    </Grid>
-
-
-
+                    <Label Text="Authors" FontSize="Header" Margin="7,7,7,0" FontAttributes="Bold"/>
+                    <CollectionView ItemsSource="{Binding Book.Authors}" ItemsLayout="HorizontalList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="api:AuthorModel">
+                                <Border Margin="2" BackgroundColor="BlueViolet">
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="FirstName" />
+                                                <Binding Path="LastName" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </RefreshView>
 </vw:BaseContentPage>
