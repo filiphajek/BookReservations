@@ -8,27 +8,39 @@
                     x:Class="BookReservations.App.Views.CatalogPage"
                     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                     x:Name="Catalog"
+                    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     BackgroundColor="{StaticResource PrimaryColor}"
                     xmlns:c="clr-namespace:BookReservations.App.Controls"
                     Title="Catalog">
-    
+
     <Grid RowDefinitions="auto, *">
         <Grid Margin="10" RowDefinitions="auto, auto" ColumnDefinitions="auto,*,auto">
-            <Entry Placeholder="Search book" Text="{Binding SearchText}" Grid.ColumnSpan="3" Grid.Column="0"/>
+            <Entry Placeholder="Search book" 
+                   Text="{Binding SearchText}" 
+                   TextColor="{StaticResource WhiteColor}"
+                   Grid.ColumnSpan="3" 
+                   Grid.Column="0"/>
 
             <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0">
-                <Label Text="Is available" VerticalOptions="Center"/>
-                <CheckBox IsChecked="{Binding IsAvailable}" Color="White"/>
+                <Label Text="Is available" 
+                       VerticalOptions="Center"
+                       TextColor="{StaticResource WhiteColor}" />
+                <CheckBox IsChecked="{Binding IsAvailable}" 
+                          Color="{StaticResource WhiteColor}"/>
             </HorizontalStackLayout>
 
             <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0" Grid.Column="2">
-                <Label Text="Order descending" VerticalOptions="Center"/>
-                <CheckBox IsChecked="{Binding Ascending}" Color="White"/>
+                <Label Text="Order descending" 
+                       TextColor="{StaticResource WhiteColor}" 
+                       VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding Ascending}" 
+                          Color="{StaticResource WhiteColor}" />
             </HorizontalStackLayout>
         </Grid>
 
-        <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
-            <!--Scrolled="CollectionViewScrolled"-->
+        <RefreshView Grid.Row="1" 
+                     IsRefreshing="{Binding IsRefreshing}" 
+                     Command="{Binding RefreshCommand}">
             <CollectionView 
                     ItemsSource="{Binding Books}"
                     RemainingItemsThreshold="1"
@@ -43,10 +55,21 @@
                 </CollectionView.EmptyViewTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="api:BookModel">
-                        <Border Margin="10,0,10,5" BackgroundColor="Transparent" Stroke="gray" StrokeThickness="1">
-                            <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto, *" RowSpacing="10" ColumnSpacing="10">
+                        <Border Margin="10,0,10,5" 
+                                BackgroundColor="{StaticResource Tertiary}" 
+                                Stroke="gray" 
+                                StrokeThickness="1">
+                            <Grid RowDefinitions="auto,auto" 
+                                  ColumnDefinitions="auto, *" 
+                                  RowSpacing="10" 
+                                  ColumnSpacing="10">
 
-                                <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" RowDefinitions="*, auto"  WidthRequest="110" HeightRequest="110">
+                                <Grid Grid.Column="0" 
+                                      Grid.Row="0" 
+                                      Grid.RowSpan="2" 
+                                      RowDefinitions="*, auto"  
+                                      WidthRequest="110" 
+                                      HeightRequest="110">
                                     <Image Grid.Row="0">
                                         <Image.Source>
                                             <UriImageSource Uri="{Binding Image}"/>
@@ -54,24 +77,43 @@
                                     </Image>
 
                                     <HorizontalStackLayout Grid.Row="1">
-                                        <Label Text="Available" FontAttributes="Bold" TextColor="Green" FontSize="13" VerticalOptions="Center">
+                                        <Label Text="{Static f:FontAwesomeIcons.Check}" 
+                                               FontFamily="{Static f:Fonts.FontAwesome}"
+                                               FontAttributes="Bold" 
+                                               TextColor="Green" 
+                                               FontSize="15" 
+                                               ToolTipProperties.Text="Available"
+                                               VerticalOptions="Center">
                                             <Label.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding IsAvailable}" Value="False">
-                                                    <Setter Property="TextColor" Value="Red" />
-                                                    <Setter Property="Text" Value="Not available" />
+                                                <DataTrigger TargetType="Label" 
+                                                             Binding="{Binding IsAvailable}" 
+                                                             Value="False">
+                                                    <Setter Property="TextColor" 
+                                                            Value="{StaticResource ErrorColor}" />
+                                                    <Setter Property="ToolTipProperties.Text" 
+                                                            Value="Not available" />
+                                                    <Setter Property="Text" 
+                                                            Value="{Static f:FontAwesomeIcons.ExclamationCircle}"  />
                                                 </DataTrigger>
                                             </Label.Triggers>
                                         </Label>
                                     </HorizontalStackLayout>
                                 </Grid>
 
-                                <Label Grid.Column="1" FontSize="20" Text="{Binding Name}"/>
-                                <Label Grid.Column="1" Grid.Row="1" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation"/>
+                                <Label Grid.Column="1" 
+                                       FontSize="22" 
+                                       TextColor="{StaticResource WhiteColor}"
+                                       Text="{Binding Name}"/>
+                                <Label Grid.Column="1" 
+                                       Grid.Row="1" 
+                                       Text="{Binding Description}" 
+                                       TextColor="{StaticResource WhiteColor}"
+                                       MaxLines="4" 
+                                       FontSize="11"/>
                             </Grid>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer 
-                                Command="{Binding Source={x:Reference Catalog}, Path=BindingContext.GoToDetailCommand}"
-                                CommandParameter="{Binding Id}" />
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference Catalog}, Path=BindingContext.GoToDetailCommand}"
+                                                      CommandParameter="{Binding Id}" />
                             </Border.GestureRecognizers>
                         </Border>
                     </DataTemplate>

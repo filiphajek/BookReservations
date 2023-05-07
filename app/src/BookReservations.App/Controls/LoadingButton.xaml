@@ -4,7 +4,7 @@
              x:Class="BookReservations.App.Controls.LoadingButton">
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Border BackgroundColor="White">
+            <Border BackgroundColor="{StaticResource SecondaryColor}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" NumberOfTapsRequired="1"/>
                 </Border.GestureRecognizers>
@@ -25,12 +25,13 @@
                         VerticalTextAlignment="Center" 
                         HorizontalTextAlignment="Center" />
                 </Grid>
-            <Border.Triggers>
+                
+                <Border.Triggers>
                     <DataTrigger TargetType="Border" Binding="{TemplateBinding Command.IsRunning}" Value="True">
-                    <Setter Property="BackgroundColor" Value="Red" />
-                </DataTrigger>
+                        <Setter Property="BackgroundColor" Value="{StaticResource Gray500}" />
+                    </DataTrigger>
+                </Border.Triggers>
 
-            </Border.Triggers>
             </Border>
         </ControlTemplate>
     </ContentView.ControlTemplate>

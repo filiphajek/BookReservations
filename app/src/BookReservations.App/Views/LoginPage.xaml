@@ -8,16 +8,16 @@
                     x:DataType="vm:LoginViewModel"
                     Shell.FlyoutBehavior="Disabled"
                     Shell.NavBarIsVisible="False"
-                    BackgroundColor="{StaticResource PrimaryColor}"
-                    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+                    BackgroundColor="{StaticResource PrimaryColor}">
     <Grid>
-        <StackLayout Margin="20">
+        <VerticalStackLayout Margin="20">
             <StackLayout Margin="0,80">
                 <Label FontSize="32" 
                        Text="Welcome Back"/>
                 <Label FontFamily="OpenSansRegular" 
                        TextColor="{StaticResource SecondaryColor}" 
-                       FontSize="16" Text="Sign in to continue"/>
+                       FontSize="16" 
+                       Text="Sign in to continue"/>
             </StackLayout>
 
             <StackLayout>
@@ -25,51 +25,61 @@
                        TextColor="{StaticResource SecondaryColor}" 
                        FontSize="16" 
                        Text="Username"/>
-                <Grid Margin="0,5">
-                    <Entry 
-                           x:Name="usernameEntry"
+                <Entry x:Name="usernameEntry"
                            Placeholder="Enter username" 
-                           Margin="5,0"
+                           Margin="5,0,0,5"
                            PlaceholderColor="Gray" 
+                           TextColor="{StaticResource WhiteColor}" 
                            ToolTipProperties.Text="Enter the username (> 3 characters)"
-                           Text="{Binding Username}" >
-                        <Entry.Behaviors>
-                            <toolkit:CharactersValidationBehavior 
-                                ValidStyle="{StaticResource ValidEntryStyle}"
-                                InvalidStyle="{StaticResource InvalidEntryStyle}"
-                                Flags="ValidateOnValueChanged"
-                                CharacterType="Any" 
-                                MinimumCharacterTypeCount="3">
-                            </toolkit:CharactersValidationBehavior>
-                        </Entry.Behaviors>
-                    </Entry>
-                </Grid>
+                           Text="{Binding Username}" />
 
                 <Label FontFamily="OpenSansRegular" 
                        TextColor="{StaticResource SecondaryColor}" 
-                       FontSize="16" Text="Password"/>
-                <Grid Margin="0,5">
-                    <Entry x:Name="password"  BackgroundColor="Transparent" Placeholder="Enter password" 
-                           TextColor="White" Margin="5,0"
+                       FontSize="16" 
+                       Text="Password"/>
+                <Entry x:Name="password"  
+                           BackgroundColor="Transparent" 
+                           Placeholder="Enter password" 
+                           TextColor="{StaticResource WhiteColor}" Margin="5,0,0,5"
                            PlaceholderColor="Gray" IsPassword="True" />
-                </Grid>
+                <Label Text="{Binding Error}" TextColor="{StaticResource ErrorColor}"/>
             </StackLayout>
 
             <Grid ColumnDefinitions="2*, *, 2*">
-                <c:LoadingButton Grid.Column="0" Margin="0,15" Command="{Binding LoginCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign in"/>
-                <Button Grid.Column="2" Margin="0,15" Command="{Binding SignOnCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign up"/>
+                <c:LoadingButton Grid.Column="0" 
+                                 Margin="0,15" 
+                                 Command="{Binding LoginCommand}" 
+                                 CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" 
+                                 Text="Sign in"/>
+                <Button Grid.Column="2" 
+                        Margin="0,15" 
+                        Command="{Binding SignOnCommand}" 
+                        BackgroundColor="{StaticResource SecondaryColor}" 
+                        CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" 
+                        Text="Sign up"/>
             </Grid>
 
             <VerticalStackLayout Spacing="10">
-                <c:CustomImageButton Image="microsoftlogo.png" Command="{Binding MsSignOnCommand}" Color="{StaticResource Gray500}">
-                    <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="17" Text="Sign in with Microsoft"/>
+                <c:CustomImageButton Image="microsoftlogo.png" 
+                                     Command="{Binding MsSignOnCommand}" 
+                                     Color="{StaticResource Gray500}">
+                    <Label HorizontalTextAlignment="Center" 
+                           VerticalTextAlignment="Center" 
+                           FontSize="17" 
+                           Text="Sign in with Microsoft"/>
                 </c:CustomImageButton>
 
-                <c:CustomImageButton Image="googlelogo.png" Command="{Binding GoogleSignOnCommand}" Color="{StaticResource Gray500}">
-                    <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="17" Text="Sign in with Google"/>
+                <c:CustomImageButton 
+                    Image="googlelogo.png" 
+                    Command="{Binding GoogleSignOnCommand}" 
+                    Color="{StaticResource Gray500}">
+                    <Label HorizontalTextAlignment="Center" 
+                           VerticalTextAlignment="Center"
+                           FontSize="17" 
+                           Text="Sign in with Google"/>
                 </c:CustomImageButton>
             </VerticalStackLayout>
 
-        </StackLayout>
+        </VerticalStackLayout>
     </Grid>
 </vw:BaseContentPage>

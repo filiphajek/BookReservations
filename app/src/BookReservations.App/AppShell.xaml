@@ -20,16 +20,40 @@
                         FontFamily="{Static f:Fonts.FontAwesome}" 
                         Text="{Static f:FontAwesomeIcons.ArrowLeft}" 
                         FontSize="22" 
-                        TextColor="White" 
+                        TextColor="{StaticResource SecondaryColor}"
                         Command="{Binding HideFlyoutCommand}"
                         BackgroundColor="{StaticResource PrimaryColor}"/>
-                <Grid Grid.Row="1" HorizontalOptions="Start" RowDefinitions="auto, auto" ColumnDefinitions="auto,*" RowSpacing="5" ColumnSpacing="15" Margin="10,0,0,10">
+                <Button HorizontalOptions="End" 
+                        FontFamily="{Static f:Fonts.FontAwesome}" 
+                        Text="{Static f:FontAwesomeIcons.PowerOff}" 
+                        FontSize="22" 
+                        TextColor="{StaticResource SecondaryColor}"
+                        Command="{Binding LogoutCommand}"
+                        BackgroundColor="{StaticResource PrimaryColor}"/>
+                <Grid Grid.Row="1" 
+                      HorizontalOptions="Start" 
+                      RowDefinitions="auto, auto" 
+                      ColumnDefinitions="auto,*" 
+                      RowSpacing="5" 
+                      ColumnSpacing="15" 
+                      Margin="10,0,0,10">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoToUserDetailCommand}" NumberOfTapsRequired="1"/>
                     </Grid.GestureRecognizers>
-                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding User.UserName}" FontAttributes="Bold"/>
-                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding User.Email}" />
-                    <toolkit:AvatarView ImageSource="{Binding User.Image}" VerticalOptions="CenterAndExpand" Grid.RowSpan="2" Grid.Column="0" Text="ZS" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1" 
+                           Text="{Binding User.UserName}" 
+                           FontAttributes="Bold"/>
+                    <Label Grid.Row="1" 
+                           Grid.Column="1" 
+                           Text="{Binding User.Email}" />
+                    <toolkit:AvatarView ImageSource="{Binding User.Image}" 
+                                        VerticalOptions="CenterAndExpand" 
+                                        Grid.RowSpan="2" 
+                                        Grid.Column="0" 
+                                        WidthRequest="50" 
+                                        HeightRequest="50" 
+                                        HorizontalOptions="Center" />
                 </Grid>
             </Grid>
             <VerticalStackLayout Margin="0,0,0,20">
@@ -43,45 +67,62 @@
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
-        <Button TextColor="Black" Text="About" Margin="20" Clicked="AboutButtonClicked"/>
+        <Button TextColor="{StaticResource PrimaryColor}" 
+                Text="About" Margin="20" 
+                Clicked="AboutButtonClicked"/>
     </Shell.FlyoutFooter>
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Books_Title}">
         <FlyoutItem.Icon>
-            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Book}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Book}" 
+                             FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
+        <ShellContent Title="Books" 
+                      ContentTemplate="{DataTemplate views:CatalogPage}" 
+                      Route="books" />
     </FlyoutItem>
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Reservations_Title}">
         <FlyoutItem.Icon>
-            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Ticket}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Ticket}" 
+                             FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:ReservationsPage}" Route="reservations" />
+        <ShellContent Title="Books" 
+                      ContentTemplate="{DataTemplate views:ReservationsPage}" 
+                      Route="reservations" />
     </FlyoutItem>
 
     <FlyoutItem Title="Wishlist">
         <FlyoutItem.Icon>
-            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Heart}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Heart}" 
+                             FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Wishlist" ContentTemplate="{DataTemplate views:WishlistPage}" Route="wishlist" />
+        <ShellContent Title="Wishlist" 
+                      ContentTemplate="{DataTemplate views:WishlistPage}" 
+                      Route="wishlist" />
     </FlyoutItem>
 
     <FlyoutItem Title="Subscriptions">
         <FlyoutItem.Icon>
-            <FontImageSource Glyph="{Static f:FontAwesomeIcons.PlusCircle}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.PlusCircle}" 
+                             FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Subscriptions" ContentTemplate="{DataTemplate views:SubscriptionPage}" Route="subscriptions" />
+        <ShellContent Title="Subscriptions" 
+                      ContentTemplate="{DataTemplate views:SubscriptionPage}" 
+                      Route="subscriptions" />
     </FlyoutItem>
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Settings_Title}">
         <FlyoutItem.Icon>
-            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Cog}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Cog}" 
+                             FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:SettingsPage}" Route="settings" />
+        <ShellContent Title="Books" 
+                      ContentTemplate="{DataTemplate views:SettingsPage}" 
+                      Route="settings" />
     </FlyoutItem>
 </Shell>

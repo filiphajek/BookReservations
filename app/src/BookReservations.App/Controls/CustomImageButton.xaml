@@ -10,12 +10,8 @@
                 </Frame.GestureRecognizers>
                 
                 <Grid ColumnDefinitions="auto,*">
-                    <Image Grid.Column="0" HeightRequest="35" WidthRequest="35" Source="{TemplateBinding Image}" >
-                        <!--<Image.Source>
-                            <UriImageSource Uri="{TemplateBinding Image}" CacheValidity="10:00:00:00"/>
-                        </Image.Source>-->
-                    </Image>
-                <ContentPresenter Grid.Column="1"/>
+                    <Image Grid.Column="0" HeightRequest="35" WidthRequest="35" Source="{TemplateBinding Image}" />
+                    <ContentPresenter Grid.Column="1"/>
                 </Grid>
                 
             </Frame>

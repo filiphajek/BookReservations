@@ -1,6 +1,7 @@
 ﻿using BookReservations.Api.BL.Commands;
 using BookReservations.Api.BL.Models;
 using BookReservations.Infrastructure;
+using BookReservations.Infrastructure.BL.Common;
 using BookReservations.Infrastructure.Extensions;
 using FluentValidation;
 using MediatR;
@@ -24,6 +25,9 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpPost]
+    [ProducesResponseType(typeof(ValidationErrorResponse), 422)]
+    [ProducesResponseType(typeof(UpdateUserResponse), 400)]
+    [ProducesResponseType(typeof(UpdateUserResponse), 200)]
     public async Task<ActionResult> UpdateUser([FromForm] UserUpdateModel user, IFormFile? file, CancellationToken cancellationToken)
     {
         if (!User.IsInRole(BookReservationsRoles.Admin))
@@ -38,7 +42,7 @@ public class UserController : ControllerBase
         var validationResult = await validator.ValidateAsync(user, cancellationToken);
         if (!validationResult.IsValid)
         {
-            return BadRequest(validationResult.ToDictionary());
+            return StatusCode(422, new ValidationErrorResponse("Validation errors", "422 - validation errors", 422, (Dictionary<string, string[]>)validationResult.ToDictionary()));
         }
         var response = await mediator.Send(new UpdateUserCommand(user, file), cancellationToken);
         return StatusCode(response.Success ? 200 : 400, response);

@@ -7,61 +7,116 @@
                     x:Class="BookReservations.App.Views.UserDetailPage"
                     xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-                    Title="User detail">
+                    Title="User detail"
+                    BackgroundColor="{StaticResource PrimaryColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNullConverter x:Key="IsNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding SaveProfileCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Save}" Size="30"/>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" 
+                                 Glyph="{x:Static f:FontAwesomeIcons.Save}"
+                                 Size="30"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
-    <VerticalStackLayout>
-        <Image Source="{Binding User.Image}"/>
-        <Button Text="Select an image" Command="{Binding SelectImageCommand}"/>
 
-        <Entry Text="{Binding User.FirstName}">
-            <Entry.Behaviors>
-                <toolkit:CharactersValidationBehavior 
-                                ValidStyle="{StaticResource ValidEntryStyle}"
-                                InvalidStyle="{StaticResource InvalidEntryStyle}"
-                                Flags="ValidateOnValueChanged"
-                                CharacterType="Any" 
-                                MinimumCharacterTypeCount="3">
-                </toolkit:CharactersValidationBehavior>
-            </Entry.Behaviors>
-        </Entry>
-        <Entry Text="{Binding User.LastName}">
-            <Entry.Behaviors>
-                <toolkit:CharactersValidationBehavior 
-                                ValidStyle="{StaticResource ValidEntryStyle}"
-                                InvalidStyle="{StaticResource InvalidEntryStyle}"
-                                Flags="ValidateOnValueChanged"
-                                CharacterType="Any" 
-                                MinimumCharacterTypeCount="3">
-                </toolkit:CharactersValidationBehavior>
-            </Entry.Behaviors>
-        </Entry>
-        <Entry Text="{Binding User.UserName}">
-            <Entry.Behaviors>
-                <toolkit:CharactersValidationBehavior 
-                                ValidStyle="{StaticResource ValidEntryStyle}"
-                                InvalidStyle="{StaticResource InvalidEntryStyle}"
-                                Flags="ValidateOnValueChanged"
-                                CharacterType="Any" 
-                                MinimumCharacterTypeCount="3">
-                </toolkit:CharactersValidationBehavior>
-            </Entry.Behaviors>
-        </Entry>
-        <Entry Text="{Binding User.Email}">
-            <Entry.Behaviors>
-                <toolkit:EmailValidationBehavior 
-                                ValidStyle="{StaticResource ValidEntryStyle}"
-                                InvalidStyle="{StaticResource InvalidEntryStyle}">
-                </toolkit:EmailValidationBehavior>
-            </Entry.Behaviors>
-        </Entry>
+    <ScrollView AutomationProperties.IsInAccessibleTree="False">
+        <Grid RowDefinitions="auto, auto, *">
+            <Image Source="{Binding User.Image}" 
+                   IsVisible="{Binding Image, Converter={StaticResource IsNullConverter}}"/>
+            <Image Source="{Binding Image}"/>
 
-    </VerticalStackLayout>
+            <Button Grid.Row="1" 
+                    Margin="5" 
+                    VerticalOptions="Center" 
+                    WidthRequest="250" 
+                    Text="Select profile image" 
+                    Command="{Binding SelectImageCommand}"/>
+
+            <VerticalStackLayout Grid.Row="2" Margin="10,0,0,0">
+                <Label FontFamily="OpenSansRegular" 
+                       TextColor="{StaticResource SecondaryColor}" 
+                       FontSize="16" 
+                       Text="Username"/>
+                <Entry 
+                    Placeholder="Enter username" 
+                    Margin="5,0,0,5"
+                    PlaceholderColor="Gray" 
+                    Text="{Binding User.UserName}" >
+                    <Entry.Behaviors>
+                        <toolkit:CharactersValidationBehavior 
+                            ValidStyle="{StaticResource ValidEntryStyle}"
+                            InvalidStyle="{StaticResource InvalidEntryStyle}"
+                            Flags="ValidateOnValueChanged"
+                            CharacterType="Any" 
+                            MinimumCharacterTypeCount="3">
+                        </toolkit:CharactersValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label FontFamily="OpenSansRegular" 
+                       TextColor="{StaticResource SecondaryColor}" 
+                       FontSize="16" 
+                       Text="Email"/>
+                <Entry 
+                    Placeholder="Enter email" 
+                    Margin="5,0,0,5"
+                    PlaceholderColor="Gray" 
+                    Text="{Binding User.Email}" >
+                    <Entry.Behaviors>
+                        <toolkit:EmailValidationBehavior 
+                            ValidStyle="{StaticResource ValidEntryStyle}"
+                            InvalidStyle="{StaticResource InvalidEntryStyle}">
+                        </toolkit:EmailValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label FontFamily="OpenSansRegular" 
+                       TextColor="{StaticResource SecondaryColor}" 
+                       FontSize="16" Text="First name"/>
+                <Entry BackgroundColor="Transparent" 
+                       Placeholder="Enter first name" 
+                       Margin="5,0,0,5" 
+                       Text="{Binding User.FirstName}"
+                       PlaceholderColor="Gray">
+                    <Entry.Behaviors>
+                        <toolkit:CharactersValidationBehavior 
+                            ValidStyle="{StaticResource ValidEntryStyle}"
+                            InvalidStyle="{StaticResource InvalidEntryStyle}"
+                            Flags="ValidateOnValueChanged"
+                            CharacterType="Any" 
+                            MinimumCharacterTypeCount="3">
+                        </toolkit:CharactersValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label FontFamily="OpenSansRegular" 
+                       TextColor="{StaticResource SecondaryColor}" 
+                       FontSize="16" Text="Last name"/>
+                <Entry BackgroundColor="Transparent" 
+                       Placeholder="Enter last name" 
+                       Margin="5,0,0,5" 
+                       Text="{Binding User.LastName}"
+                       PlaceholderColor="Gray">
+                    <Entry.Behaviors>
+                        <toolkit:CharactersValidationBehavior 
+                            ValidStyle="{StaticResource ValidEntryStyle}"
+                            InvalidStyle="{StaticResource InvalidEntryStyle}"
+                            Flags="ValidateOnValueChanged"
+                            CharacterType="Any" 
+                            MinimumCharacterTypeCount="3">
+                        </toolkit:CharactersValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="{Binding Error}" TextColor="{StaticResource ErrorColor}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 </vw:BaseContentPage>

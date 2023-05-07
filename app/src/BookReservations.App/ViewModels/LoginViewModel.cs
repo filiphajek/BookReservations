@@ -4,11 +4,10 @@ using BookReservations.App.Services;
 using BookReservations.App.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel.DataAnnotations;
 
 namespace BookReservations.App.ViewModels;
 
-public partial class LoginViewModel : ObservableValidator, IViewModel
+public partial class LoginViewModel : ObservableObject, IViewModel
 {
     private readonly ILoginService loginService;
     private readonly IMessengerService messengerService;
@@ -19,7 +18,6 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
         this.messengerService = messengerService;
     }
 
-    [MinLength(3)]
     [ObservableProperty]
     private string username = "";
 
@@ -28,6 +26,11 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
 
     private bool CanLogin()
     {
+        if (string.IsNullOrEmpty(Username))
+        {
+            Error = "Enter the username";
+            return false;
+        }
         return true;
     }
 
@@ -48,7 +51,6 @@ public partial class LoginViewModel : ObservableValidator, IViewModel
             return;
         }
 
-        // CustomValidation https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/3750
         Error = "Wrong password or username";
     }
 

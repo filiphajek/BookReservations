@@ -38,13 +38,19 @@ public class LoginService : ILoginService
         }
     }
 
-    public async Task TryAuthorizeAsync()
+    public async Task<bool> TryAuthorizeAsync()
     {
         var token = await secureStorage.GetAsync("token");
-        // todo try call userinfo 
         if (!string.IsNullOrEmpty(token))
         {
             ((ApiClient)apiClient).HttpClient.SetBearerToken(token);
+            try
+            {
+                await apiClient.GetUserInfoAsync();
+            }
+            catch { }
+            return true;
         }
+        return false;
     }
 }

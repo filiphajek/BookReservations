@@ -5,82 +5,99 @@
                     xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
                     xmlns:c="clr-namespace:BookReservations.App.Controls"
+                    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     x:DataType="vm:SignUpViewModel"
                     Shell.FlyoutBehavior="Disabled"
                     Shell.NavBarIsVisible="False"
                     BackgroundColor="{StaticResource PrimaryColor}">
-    <Grid>
-        <StackLayout Margin="20">
-            <StackLayout Margin="0,80">
-                <Label FontSize="32" 
-                       Text="Sign up"/>
-            </StackLayout>
-            
-            <StackLayout>
-                <Label FontFamily="OpenSansRegular" 
-                       TextColor="{StaticResource SecondaryColor}" 
-                       FontSize="16" 
-                       Text="Username"/>
-                <Grid Margin="0,5">
+    <ScrollView AutomationProperties.IsInAccessibleTree="False">
+        <Grid>
+            <VerticalStackLayout Margin="10">
+                <Button TextColor="{StaticResource SecondaryColor}" 
+                        BackgroundColor="Transparent" 
+                        HorizontalOptions="Start" 
+                        Command="{Binding GoBackCommand}" 
+                        FontFamily="{Static f:Fonts.FontAwesome}" 
+                        FontSize="22"
+                        Text="{Static f:FontAwesomeIcons.ArrowLeft}" />
+
+                <StackLayout Margin="10,45">
+                    <Label FontSize="32" Text="Sign up"/>
+                </StackLayout>
+
+                <VerticalStackLayout Margin="10,0,0,0">
+                    <Label 
+                        FontFamily="OpenSansRegular" 
+                        TextColor="{StaticResource SecondaryColor}" 
+                        FontSize="16" 
+                        Text="Username"/>
                     <Entry 
-                           Placeholder="Enter username" 
-                           Margin="5,0"
-                           TextColor="White"
-                           PlaceholderColor="Gray" 
-                           Text="{Binding Username}" >
+                        Placeholder="Enter username" 
+                        Margin="5,0,0,5"
+                        TextColor="{StaticResource WhiteColor}"
+                        PlaceholderColor="Gray" 
+                        Text="{Binding Username}" >
                     </Entry>
-                </Grid>
-                
-                <Label FontFamily="OpenSansRegular" 
-                       TextColor="{StaticResource SecondaryColor}" 
-                       FontSize="16" 
-                       Text="Email"/>
-                <Grid Margin="0,5">
+
+                    <Label 
+                        FontFamily="OpenSansRegular" 
+                        TextColor="{StaticResource SecondaryColor}" 
+                        FontSize="16" 
+                        Text="Email"/>
                     <Entry 
-                           Placeholder="Enter email" 
-                           Margin="5,0"
-                           TextColor="White"
-                           PlaceholderColor="Gray" 
-                           Text="{Binding Email}" >
+                        Placeholder="Enter email" 
+                        Margin="5,0,0,5"
+                        TextColor="{StaticResource WhiteColor}"
+                        PlaceholderColor="Gray" 
+                        Text="{Binding Email}" >
                     </Entry>
-                </Grid>
-                
-                <Label FontFamily="OpenSansRegular" 
-                       TextColor="{StaticResource SecondaryColor}" 
-                       FontSize="16" Text="First name"/>
-                <Grid Margin="0,5">
-                    <Entry BackgroundColor="Transparent" Placeholder="Enter first name" 
-                           TextColor="White" Margin="5,0"
-                           PlaceholderColor="Gray"/>
 
-                </Grid>
+                    <Label 
+                        FontFamily="OpenSansRegular" 
+                        TextColor="{StaticResource SecondaryColor}" 
+                        FontSize="16" 
+                        Text="First name"/>
+                    <Entry 
+                        BackgroundColor="Transparent" 
+                        Placeholder="Enter first name" 
+                        TextColor="{StaticResource WhiteColor}"
+                        Margin="5,0,0,5" 
+                        Text="{Binding FirstName}"
+                        PlaceholderColor="Gray"/>
 
-                <Label FontFamily="OpenSansRegular" 
-                       TextColor="{StaticResource SecondaryColor}" 
-                       FontSize="16" Text="Last name"/>
-                <Grid Margin="0,5">
-                    <Entry BackgroundColor="Transparent" Placeholder="Enter last name" 
-                           TextColor="White" Margin="5,0"
-                           PlaceholderColor="Gray"/>
+                    <Label 
+                        FontFamily="OpenSansRegular" 
+                        TextColor="{StaticResource SecondaryColor}" 
+                        FontSize="16" 
+                        Text="Last name"/>
+                    <Entry 
+                        BackgroundColor="Transparent" 
+                        Placeholder="Enter last name" 
+                        TextColor="{StaticResource WhiteColor}"
+                        Margin="5,0,0,5" 
+                        Text="{Binding LastName}"
+                        PlaceholderColor="Gray"/>
 
-                </Grid>
-
-                <Label FontFamily="OpenSansRegular" 
+                    <Label FontFamily="OpenSansRegular" 
                        TextColor="{StaticResource SecondaryColor}" 
                        FontSize="16" Text="Password"/>
-                <Grid Margin="0,5">
-                    <Entry x:Name="password" BackgroundColor="Transparent" Placeholder="Enter password" 
-                           TextColor="White" Margin="5,0"
+                    <Entry x:Name="password" 
+                           BackgroundColor="Transparent" 
+                           Placeholder="Enter password" 
+                           TextColor="{StaticResource WhiteColor}"
+                           Margin="5,0,0,5"
                            PlaceholderColor="Gray" IsPassword="True" />
 
-                </Grid>
-            </StackLayout>
-            
-            <Grid ColumnDefinitions="2*, *, 2*">
-                <c:LoadingButton Grid.Column="0" Margin="0,15" Command="{Binding GoBackCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Login"/>
-                <c:LoadingButton Grid.Column="2" Margin="0,15" Command="{Binding SignOnCommand}" CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" Text="Sign up"/>
-            </Grid>
-            
-        </StackLayout>
-    </Grid>
+                    <Label Text="{Binding Error}" TextColor="{StaticResource ErrorColor}"/>
+                </VerticalStackLayout>
+
+                <c:LoadingButton Grid.Column="2" 
+                                 Margin="0,15" 
+                                 Command="{Binding SignUpCommand}" 
+                                 CommandParameter="{Binding Path=Text,Mode=OneWay,Source={x:Reference Name=password}}" 
+                                 Text="Sign up"/>
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 </vw:BaseContentPage>

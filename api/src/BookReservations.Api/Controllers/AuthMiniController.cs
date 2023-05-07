@@ -3,6 +3,7 @@ using BookReservations.Api.BL.Facades;
 using BookReservations.Api.BL.Models;
 using BookReservations.Api.DAL.Entities;
 using BookReservations.Api.Filters;
+using BookReservations.Infrastructure.BL.Common;
 using BookReservations.Infrastructure.BL.Queries;
 using BookReservations.Infrastructure.Extensions;
 using MediatR;
@@ -29,6 +30,8 @@ public class AuthMiniController : MiniController
             return Results.BadRequest(result);
         })
         .Produces<CreateUserResponse>()
+        .Produces<CreateUserResponse>(400)
+        .Produces<ValidationErrorResponse>(422)
         .ProducesProblem(404)
         .WithName("Register")
         .AddEndpointFilter<ValidationFilter<UserRegistrationModel>>();

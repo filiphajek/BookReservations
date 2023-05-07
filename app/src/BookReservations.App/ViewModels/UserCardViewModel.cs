@@ -1,4 +1,6 @@
 ﻿using BookReservations.Api.Client;
+using BookReservations.App.Messages;
+using BookReservations.App.Services;
 using BookReservations.App.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,10 +10,16 @@ namespace BookReservations.App.ViewModels;
 public partial class UserCardViewModel : ObservableObject, IViewModel
 {
     private readonly IApiClient apiClient;
+    private readonly ISecureStorage secureStorage;
 
-    public UserCardViewModel(IApiClient apiClient)
+    public UserCardViewModel(IApiClient apiClient, ISecureStorage secureStorage, IMessengerService messengerService)
     {
         this.apiClient = apiClient;
+        this.secureStorage = secureStorage;
+        messengerService.Register<UserProfileChanged>(i =>
+        {
+            User = i.User;
+        });
     }
 
     [ObservableProperty]
@@ -32,6 +40,13 @@ public partial class UserCardViewModel : ObservableObject, IViewModel
 
     [RelayCommand]
     private void HideFlyout() => IsFlyoutOpen = false;
+
+    [RelayCommand]
+    private async Task LogoutAsync()
+    {
+        secureStorage.Remove("token");
+        await Shell.Current.GoToAsync("login");
+    }
 
     public async Task InitializeAsync()
     {

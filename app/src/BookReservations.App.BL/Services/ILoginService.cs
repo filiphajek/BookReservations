@@ -2,6 +2,6 @@
 
 public interface ILoginService : IService
 {
-    Task TryAuthorizeAsync();
+    Task<bool> TryAuthorizeAsync();
     Task<bool> LoginAsync(string login, string password);
 }
