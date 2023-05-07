@@ -8,6 +8,7 @@ namespace BookReservations.App
 #else
     [Application]                               
 #endif
+    [assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage)]
     public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)

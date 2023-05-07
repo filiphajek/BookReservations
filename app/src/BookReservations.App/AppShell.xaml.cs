@@ -18,4 +18,10 @@ public partial class AppShell : Shell
         base.OnAppearing();
         await _viewModel.InitializeAsync();
     }
+
+    private async void AboutButtonClicked(object sender, EventArgs e)
+    {
+        this.FlyoutIsPresented = false;
+        await Current.GoToAsync("about");
+    }
 }

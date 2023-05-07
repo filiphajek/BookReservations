@@ -4,13 +4,23 @@
                     x:Class="BookReservations.App.Views.ReservationsPage"
                     x:DataType="vm:ReservationViewModel"
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
+                    xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
                     xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
-                    Title="ReservationsPage">
+                    Title="Reservations">
 
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <CollectionView ItemsSource="{Binding Reservations}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="api:ReservationModel">
+                <Border Margin="5">
+                    <Grid ColumnDefinitions="auto,*">
+                        <Label Grid.Column="1" Margin="20,0,0,0" Text="{Binding BookName}" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference RelationRoot}}" CommandParameter="{Binding BookId}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </vw:BaseContentPage>

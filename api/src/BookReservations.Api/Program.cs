@@ -7,6 +7,7 @@ using BookReservations.Api.Middlewares;
 using BookReservations.Api.Services;
 using BookReservations.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
@@ -113,6 +114,10 @@ builder.Services.AddAuthorization(i =>
         p.RequireRole(BookReservationsRoles.Librarian, BookReservationsRoles.User)
         .RequireAuthenticatedUser();
     });
+    i.DefaultPolicy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, "default", "BearerMsal")
+    .Build();
 });
 
 builder.Services.AddOutputCache(options =>

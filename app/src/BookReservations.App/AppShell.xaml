@@ -9,17 +9,28 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vw="clr-namespace:BookReservations.App.ViewModels"
     FlyoutBackgroundColor="{DynamicResource PrimaryColor}"
+    FlyoutIsPresented="{Binding IsFlyoutOpen}"
+    x:DataType="vw:UserCardViewModel"
     xmlns:views="clr-namespace:BookReservations.App.Views">
 
     <Shell.FlyoutHeader>
-        <VerticalStackLayout x:DataType="vw:UserCardViewModel"> <!--zkusit zde binding context a to VM poslat do custom controlky TODO-->
-            <Grid HorizontalOptions="Start" RowDefinitions="auto, auto, auto" RowSpacing="10" Margin="20">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding GoToUserDetailCommand}" NumberOfTapsRequired="1"/>
-                </Grid.GestureRecognizers>
-                <toolkit:AvatarView Grid.Row="0" Text="ZS" />
-                <Label Grid.Row="1" Text="{Binding Username}"/>
-                <Label Grid.Row="2" Text="{Binding Email}" />
+        <VerticalStackLayout>
+            <Grid RowDefinitions="auto,*">
+                <Button HorizontalOptions="Start" 
+                        FontFamily="{Static f:Fonts.FontAwesome}" 
+                        Text="{Static f:FontAwesomeIcons.ArrowLeft}" 
+                        FontSize="22" 
+                        TextColor="White" 
+                        Command="{Binding HideFlyoutCommand}"
+                        BackgroundColor="{StaticResource PrimaryColor}"/>
+                <Grid Grid.Row="1" HorizontalOptions="Start" RowDefinitions="auto, auto" ColumnDefinitions="auto,*" RowSpacing="5" ColumnSpacing="15" Margin="10,0,0,10">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToUserDetailCommand}" NumberOfTapsRequired="1"/>
+                    </Grid.GestureRecognizers>
+                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding User.UserName}" FontAttributes="Bold"/>
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding User.Email}" />
+                    <toolkit:AvatarView ImageSource="{Binding User.Image}" VerticalOptions="CenterAndExpand" Grid.RowSpan="2" Grid.Column="0" Text="ZS" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" />
+                </Grid>
             </Grid>
             <VerticalStackLayout Margin="0,0,0,20">
                 <Line X1="0"
@@ -32,16 +43,14 @@
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
-        <Button TextColor="Black" Text="About" Margin="20"/>
+        <Button TextColor="Black" Text="About" Margin="20" Clicked="AboutButtonClicked"/>
     </Shell.FlyoutFooter>
-    
-    <!--<ShellContent ContentTemplate="{DataTemplate views:LoginPage}" FlyoutItemIsVisible="False"/>-->
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Books_Title}">
         <FlyoutItem.Icon>
             <FontImageSource Glyph="{Static f:FontAwesomeIcons.Book}" FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
-            <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
+        <ShellContent Title="Books" ContentTemplate="{DataTemplate views:CatalogPage}" Route="books" />
     </FlyoutItem>
 
     <FlyoutItem Title="{x:Static t:ShellTexts.Reservations_Title}">
@@ -52,6 +61,22 @@
         <ShellContent Title="Books" ContentTemplate="{DataTemplate views:ReservationsPage}" Route="reservations" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Wishlist">
+        <FlyoutItem.Icon>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.Heart}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+        </FlyoutItem.Icon>
+
+        <ShellContent Title="Wishlist" ContentTemplate="{DataTemplate views:WishlistPage}" Route="wishlist" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Subscriptions">
+        <FlyoutItem.Icon>
+            <FontImageSource Glyph="{Static f:FontAwesomeIcons.PlusCircle}" FontFamily="{Static f:Fonts.FontAwesome}"/>
+        </FlyoutItem.Icon>
+
+        <ShellContent Title="Subscriptions" ContentTemplate="{DataTemplate views:SubscriptionPage}" Route="subscriptions" />
+    </FlyoutItem>
+
     <FlyoutItem Title="{x:Static t:ShellTexts.Settings_Title}">
         <FlyoutItem.Icon>
             <FontImageSource Glyph="{Static f:FontAwesomeIcons.Cog}" FontFamily="{Static f:Fonts.FontAwesome}"/>
@@ -59,5 +84,4 @@
 
         <ShellContent Title="Books" ContentTemplate="{DataTemplate views:SettingsPage}" Route="settings" />
     </FlyoutItem>
-    
 </Shell>

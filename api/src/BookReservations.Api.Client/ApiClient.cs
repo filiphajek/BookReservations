@@ -76,12 +76,12 @@ namespace BookReservations.Api.Client
 
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SwaggerResponse> GetUserInfoAsync();
+        System.Threading.Tasks.Task<SwaggerResponse<UserInfoModel>> GetUserInfoAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SwaggerResponse> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SwaggerResponse<UserInfoModel>> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -319,12 +319,12 @@ namespace BookReservations.Api.Client
 
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SwaggerResponse> UserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file);
+        System.Threading.Tasks.Task<SwaggerResponse> UpdateUserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SwaggerResponse> UserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SwaggerResponse> UpdateUserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -873,7 +873,7 @@ namespace BookReservations.Api.Client
 
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SwaggerResponse> GetUserInfoAsync()
+        public virtual System.Threading.Tasks.Task<SwaggerResponse<UserInfoModel>> GetUserInfoAsync()
         {
             return GetUserInfoAsync(System.Threading.CancellationToken.None);
         }
@@ -881,7 +881,7 @@ namespace BookReservations.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SwaggerResponse> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SwaggerResponse<UserInfoModel>> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/auth/userinfo");
@@ -893,6 +893,7 @@ namespace BookReservations.Api.Client
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -917,7 +918,12 @@ namespace BookReservations.Api.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return new SwaggerResponse(status_, headers_);
+                            var objectResponse_ = await ReadObjectResponseAsync<UserInfoModel>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SwaggerException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return new SwaggerResponse<UserInfoModel>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -3202,15 +3208,15 @@ namespace BookReservations.Api.Client
 
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SwaggerResponse> UserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file)
+        public virtual System.Threading.Tasks.Task<SwaggerResponse> UpdateUserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file)
         {
-            return UserAsync(id, userName, email, firstName, lastName, image, file, System.Threading.CancellationToken.None);
+            return UpdateUserAsync(id, userName, email, firstName, lastName, image, file, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SwaggerResponse> UserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SwaggerResponse> UpdateUserAsync(int? id, string userName, string email, string firstName, string lastName, string image, FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user");
@@ -3435,7 +3441,7 @@ namespace BookReservations.Api.Client
         private string _firstName;
         private string _lastName;
         private string _nationality;
-        private System.DateTimeOffset _birthdate;
+        private System.DateTime _birthdate;
 
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Id
@@ -3498,7 +3504,7 @@ namespace BookReservations.Api.Client
         }
 
         [Newtonsoft.Json.JsonProperty("birthdate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Birthdate
+        public System.DateTime Birthdate
         {
             get { return _birthdate; }
 
@@ -4738,8 +4744,8 @@ namespace BookReservations.Api.Client
     public partial class MakeReservationModel : System.ComponentModel.INotifyPropertyChanged
     {
         private int _bookId;
-        private System.DateTimeOffset _from;
-        private System.DateTimeOffset _to;
+        private System.DateTime _from;
+        private System.DateTime _to;
 
         [Newtonsoft.Json.JsonProperty("bookId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int BookId
@@ -4757,7 +4763,7 @@ namespace BookReservations.Api.Client
         }
 
         [Newtonsoft.Json.JsonProperty("from", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset From
+        public System.DateTime From
         {
             get { return _from; }
 
@@ -4772,7 +4778,7 @@ namespace BookReservations.Api.Client
         }
 
         [Newtonsoft.Json.JsonProperty("to", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset To
+        public System.DateTime To
         {
             get { return _to; }
 
@@ -5065,8 +5071,8 @@ namespace BookReservations.Api.Client
         private string _bookName;
         private int _totalAmount;
         private int _availableAmount;
-        private System.DateTimeOffset _from;
-        private System.DateTimeOffset _to;
+        private System.DateTime _from;
+        private System.DateTime _to;
         private ReservationStatus _status;
         private int _userId;
         private string _userFullName;
@@ -5147,7 +5153,7 @@ namespace BookReservations.Api.Client
         }
 
         [Newtonsoft.Json.JsonProperty("from", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset From
+        public System.DateTime From
         {
             get { return _from; }
 
@@ -5162,7 +5168,7 @@ namespace BookReservations.Api.Client
         }
 
         [Newtonsoft.Json.JsonProperty("to", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset To
+        public System.DateTime To
         {
             get { return _to; }
 

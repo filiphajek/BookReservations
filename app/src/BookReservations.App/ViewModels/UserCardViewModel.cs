@@ -1,43 +1,40 @@
-﻿using BookReservations.App.Views;
+﻿using BookReservations.Api.Client;
+using BookReservations.App.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace BookReservations.App.ViewModels;
 
 public partial class UserCardViewModel : ObservableObject, IViewModel
 {
-    private readonly ISecureStorage _storage;
+    private readonly IApiClient apiClient;
 
-    public UserCardViewModel(ISecureStorage storage)
+    public UserCardViewModel(IApiClient apiClient)
     {
-        _storage = storage;
+        this.apiClient = apiClient;
     }
 
     [ObservableProperty]
-    private string username = string.Empty;
+    private UserInfoModel user;
 
     [ObservableProperty]
-    private string email = string.Empty;
-
-    private int id = 0;
+    private bool isFlyoutOpen = false;
 
     [RelayCommand]
     public async Task GoToUserDetailAsync()
     {
+        IsFlyoutOpen = false;
         await Shell.Current.GoToAsync(UserDetailPage.Route, new Dictionary<string, object>
         {
-            [nameof(UserDetailViewModel.Id)] = id
+            [nameof(UserDetailViewModel.Id)] = User.Id
         });
     }
 
+    [RelayCommand]
+    private void HideFlyout() => IsFlyoutOpen = false;
+
     public async Task InitializeAsync()
     {
-        var token = await _storage.GetAsync("token");
-        var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
-        Username = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value ?? string.Empty;
-        Email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value ?? string.Empty;
-        id = int.Parse(claims.FirstOrDefault(x => x.Type == "book-res-userid")?.Value ?? string.Empty);
+        User = (await apiClient.GetUserInfoAsync()).Result;
     }
 }

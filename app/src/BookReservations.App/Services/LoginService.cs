@@ -17,19 +17,25 @@ public class LoginService : ILoginService
 
     public async Task<bool> LoginAsync(string login, string password)
     {
-        var response = await apiClient.LoginJwtAsync(new()
+        try
         {
-            Login = login,
-            Password = password
-        });
+            var response = await apiClient.LoginJwtAsync(new()
+            {
+                Login = login,
+                Password = password
+            });
+            if (response.Result.Success)
+            {
+                await secureStorage.SetAsync("token", response.Result.Token);
+                ((ApiClient)apiClient).HttpClient.SetBearerToken(response.Result.Token);
+            }
 
-        if (response.Result.Success)
-        {
-            await secureStorage.SetAsync("token", response.Result.Token);
-            ((ApiClient)apiClient).HttpClient.SetBearerToken(response.Result.Token);
+            return response.Result.Success;
         }
-
-        return response.Result.Success;
+        catch
+        {
+            return false;
+        }
     }
 
     public async Task TryAuthorizeAsync()

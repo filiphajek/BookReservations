@@ -1,9 +1,10 @@
 ﻿using BookReservations.Api.Client;
 using BookReservations.App.Views;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace BookReservations.App.ViewModels;
@@ -58,6 +59,9 @@ public partial class BookViewModel : ObservableObject, IViewModel
             return;
         }
         await apiClient.AddBooksToWishlistAsync(new[] { Id });
+        BookUserModel.IsInWishlist = true;
+        var toast = Toast.Make("Added to wishlist", ToastDuration.Long);
+        await toast.Show();
     }
 
     [RelayCommand]
@@ -77,6 +81,8 @@ public partial class BookViewModel : ObservableObject, IViewModel
         if (!Book.IsAvailable)
         {
             await apiClient.SubscribeToBooksAsync(new[] { Id });
+            var toast = Toast.Make("Subscribed", ToastDuration.Long);
+            await toast.Show();
             return;
         }
         var popup = new AddReservationPopup();
@@ -89,6 +95,12 @@ public partial class BookViewModel : ObservableObject, IViewModel
                 To = vw.ToDate,
                 BookId = Book.Id,
             });
+            if (result.StatusCode != 200)
+            {
+                await Shell.Current.DisplayAlert("Error", "Something went wrong, try again", "Ok");
+                return;
+            }
+            await Shell.Current.CurrentPage.DisplayAlert("Success", "You create a reservation", "Ok");
         }
     }
 

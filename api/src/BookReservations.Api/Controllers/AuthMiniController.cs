@@ -82,6 +82,7 @@ public class AuthMiniController : MiniController
             return Results.Ok(result);
         })
         .RequireAuthorization()
+        .Produces<UserInfoModel>()
         .WithName("GetUserInfo");
     }
 }

@@ -2,12 +2,66 @@
 <vw:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
+                    xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
+                    x:DataType="vm:UserDetailViewModel"
                     x:Class="BookReservations.App.Views.UserDetailPage"
+                    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
+                    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                     Title="User detail">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SaveProfileCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Save}" Size="30"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Image Source="{Binding User.Image}"/>
+        <Button Text="Select an image" Command="{Binding SelectImageCommand}"/>
+
+        <Entry Text="{Binding User.FirstName}">
+            <Entry.Behaviors>
+                <toolkit:CharactersValidationBehavior 
+                                ValidStyle="{StaticResource ValidEntryStyle}"
+                                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                Flags="ValidateOnValueChanged"
+                                CharacterType="Any" 
+                                MinimumCharacterTypeCount="3">
+                </toolkit:CharactersValidationBehavior>
+            </Entry.Behaviors>
+        </Entry>
+        <Entry Text="{Binding User.LastName}">
+            <Entry.Behaviors>
+                <toolkit:CharactersValidationBehavior 
+                                ValidStyle="{StaticResource ValidEntryStyle}"
+                                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                Flags="ValidateOnValueChanged"
+                                CharacterType="Any" 
+                                MinimumCharacterTypeCount="3">
+                </toolkit:CharactersValidationBehavior>
+            </Entry.Behaviors>
+        </Entry>
+        <Entry Text="{Binding User.UserName}">
+            <Entry.Behaviors>
+                <toolkit:CharactersValidationBehavior 
+                                ValidStyle="{StaticResource ValidEntryStyle}"
+                                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                Flags="ValidateOnValueChanged"
+                                CharacterType="Any" 
+                                MinimumCharacterTypeCount="3">
+                </toolkit:CharactersValidationBehavior>
+            </Entry.Behaviors>
+        </Entry>
+        <Entry Text="{Binding User.Email}">
+            <Entry.Behaviors>
+                <toolkit:EmailValidationBehavior 
+                                ValidStyle="{StaticResource ValidEntryStyle}"
+                                InvalidStyle="{StaticResource InvalidEntryStyle}">
+                </toolkit:EmailValidationBehavior>
+            </Entry.Behaviors>
+        </Entry>
+
     </VerticalStackLayout>
 </vw:BaseContentPage>

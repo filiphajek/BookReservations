@@ -64,6 +64,7 @@ public static class MauiProgram
         {
             Routing.RegisterRoute(route, page);
         }
+        Routing.RegisterRoute("about", typeof(AboutPage));
 
 #if DEBUG
         builder.Logging.AddDebug();
