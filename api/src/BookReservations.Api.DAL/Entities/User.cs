@@ -26,6 +26,9 @@ public class User : Entity, IUserIdProtection
     [MaxLength(32)]
     public string Role { get; set; } = string.Empty;
 
+    [MaxLength(128)]
+    public string? MsId { get; set; } = string.Empty;
+
     public virtual ICollection<UserBookRelations> Relations { get; set; } = new List<UserBookRelations>();
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 

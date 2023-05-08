@@ -19,4 +19,14 @@ public static class ClaimsPrincipalExtensions
         }
         return result;
     }
+
+    public static string GetMsUserId(this ClaimsPrincipal claimsPrincipal)
+    {
+        var claim = claimsPrincipal.Claims.FirstOrDefault(i => i.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier");
+        if (claim is null || string.IsNullOrEmpty(claim.Value))
+        {
+            return string.Empty;
+        }
+        return claim.Value;
+    }
 }

@@ -5,7 +5,7 @@ using Microsoft.Identity.Client;
 
 namespace BookReservations.App.Msal;
 
-public class PCAWrapper
+public class MsPublicClient
 {
     private readonly IPublicClientApplication PCA;
 
@@ -14,7 +14,7 @@ public class PCAWrapper
     private const string Authority = $"https://login.microsoftonline.com/{TenantId}";
     public static string[] Scopes = { $"api://{ClientId}/access_as_user" };
 
-    public PCAWrapper()
+    public MsPublicClient()
     {
         // Create PCA once. Make sure that all the config parameters below are passed
         PCA = PublicClientApplicationBuilder

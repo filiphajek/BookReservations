@@ -1,5 +1,6 @@
 ﻿using BookReservations.Api.Client;
 using BookReservations.App.BL.Services;
+using BookReservations.App.Msal;
 using BookReservations.App.Resources.Fonts;
 using BookReservations.App.Services;
 using BookReservations.App.ViewModels;
@@ -30,6 +31,7 @@ public static class MauiProgram
         using var appSettingsStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".appsettings.json");
         builder.Configuration.AddJsonStream(appSettingsStream);
 
+        builder.Services.AddSingleton<MsPublicClient>();
         builder.Services.AddSingleton(SecureStorage.Default);
         builder.Services.AddSingleton<IMessengerService, MessengerService>();
         builder.Services.AddSingleton<IApiClient>(_ => new ApiClient(builder.Configuration["ApiUrl"], new HttpClient()));

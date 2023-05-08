@@ -56,7 +56,7 @@ public class RelationsMiniController : MiniController
             var result = await mediator.Send(new SimpleQuery<RelationInfoModel, UserBookRelations>(relationType is null ? i => userId.Value == i.UserId :
                 i => i.RelationType == relationType && userId.Value == i.UserId), cancellationToken);
 
-            return result.Any() ? Results.Ok(result) : Results.NoContent();
+            return Results.Ok(result);
         })
         .ProducesProblem(401)
         .WithName("GetRelations")

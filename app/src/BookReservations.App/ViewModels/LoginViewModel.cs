@@ -66,7 +66,13 @@ public partial class LoginViewModel : ObservableObject, IViewModel
     [RelayCommand]
     private async Task MsSignOnAsync()
     {
-        await Task.Delay(10);
+        var success = await loginService.MsSignOnAsync();
+        if (success)
+        {
+            messengerService.Send(new ChangeNavigationModeMessage());
+            return;
+        }
+        Error = "Something went wrong";
     }
 
     [RelayCommand]

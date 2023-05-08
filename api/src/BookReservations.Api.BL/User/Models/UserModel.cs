@@ -10,4 +10,5 @@ public class UserModel
     public string Image { get; set; } = default!;
     public string Password { get; set; } = default!;
     public string Role { get; set; } = default!;
+    public string? MsId { get; set; } = string.Empty;
 }

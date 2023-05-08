@@ -9,4 +9,5 @@ public class UserInfoModel
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string Image { get; set; } = default!;
+    public bool IsMsOidc { get; set; } = false;
 }

@@ -80,6 +80,11 @@ builder.Services.AddAuthentication("default")
 
 builder.Services.AddAuthorization(i =>
 {
+    i.AddPolicy(BookReservationsPolicies.MsOidc, p =>
+    {
+        p.AuthenticationSchemes = new List<string> { "BearerMsal" };
+        p.RequireAuthenticatedUser();
+    });
     i.AddPolicy(BookReservationsPolicies.AdminPolicy, p =>
     {
         p.AuthenticationSchemes = new List<string> { JwtBearerDefaults.AuthenticationScheme, "default", "BearerMsal" };

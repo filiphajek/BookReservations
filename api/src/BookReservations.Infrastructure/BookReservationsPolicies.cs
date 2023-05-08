@@ -8,4 +8,5 @@ public static class BookReservationsPolicies
     public const string ViewAllUsers = nameof(ViewAllUsers);
     public const string AdminPolicy = nameof(AdminPolicy);
     public const string ProfilePolicy = nameof(ProfilePolicy);
+    public const string MsOidc = nameof(MsOidc);
 }
