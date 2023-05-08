@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <vw:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BookReservations.App.Views.UserReviewPage"
-             xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
-             xmlns:vw="clr-namespace:BookReservations.App.Views"
-             xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
-             x:DataType="vm:UserReviewViewModel"
-             xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
-             Title="Write review">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="BookReservations.App.Views.UserReviewPage"
+                    xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
+                    xmlns:vw="clr-namespace:BookReservations.App.Views"
+                    xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
+                    x:DataType="vm:UserReviewViewModel"
+                    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    Title="Write review">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SaveReviewCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Trash}" Color="Red" Size="30"/>
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
         <ToolbarItem Command="{Binding DeleteReviewCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Save}" Size="30"/>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" 
+                                 Glyph="{x:Static f:FontAwesomeIcons.Trash}" 
+                                 Color="{StaticResource ErrorColor}" Size="30"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding SaveReviewCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" 
+                                 Glyph="{x:Static f:FontAwesomeIcons.Save}" Size="30"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -25,6 +29,9 @@
     <Grid RowDefinitions="auto,*" RowSpacing="10" Margin="10">
         <aloha:Rating Value="{Binding Review.Rating, Mode=TwoWay}"/>
 
-        <Editor Grid.Row="1" Placeholder="Your review" Text="{Binding Review.Text}"/>
+        <Editor Grid.Row="1" 
+                Placeholder="Your review" 
+                TextColor="{StaticResource SecondaryColor}"
+                Text="{Binding Review.Text}"/>
     </Grid>
 </vw:BaseContentPage>

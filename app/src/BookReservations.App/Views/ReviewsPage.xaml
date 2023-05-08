@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <vw:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BookReservations.App.Views.ReviewsPage"
-             xmlns:vw="clr-namespace:BookReservations.App.Views"
-             xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
-             x:DataType="vm:BookViewModel"
-             xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
-             xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
-             xmlns:controls="clr-namespace:BookReservations.App.Controls"
-             xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
-             Title="Reviews">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="BookReservations.App.Views.ReviewsPage"
+                    xmlns:vw="clr-namespace:BookReservations.App.Views"
+                    xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
+                    x:DataType="vm:BookViewModel"
+                    xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
+                    xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
+                    xmlns:controls="clr-namespace:BookReservations.App.Controls"
+                    xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    Title="Reviews">
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GoToUserReviewCommand}">
             <ToolbarItem.IconImageSource>
@@ -19,17 +20,30 @@
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="*, auto">
-        
         <CollectionView ItemsSource="{Binding Book.Reviews}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="api:ReviewModel">
-                    <Border Margin="2" BackgroundColor="BlueViolet">
+                    <Border Margin="2" 
+                            BackgroundColor="{StaticResource Tertiary}">
                         <VerticalStackLayout>
                             <Grid ColumnDefinitions="auto,*,auto">
-                                <aloha:Rating Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="False" Value="{Binding Rating}" />
-                                <Label Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" FontAttributes="Bold" Text="{Binding UserName}"/>
+                                <aloha:Rating 
+                                    Grid.Column="0" 
+                                    HorizontalOptions="Center" 
+                                    VerticalOptions="Center" 
+                                    IsReadOnly="True"
+                                    Value="{Binding Rating}" />
+                                <Label Grid.Column="2" 
+                                       HorizontalOptions="Center" 
+                                       VerticalOptions="Center" 
+                                       TextColor="{StaticResource SecondaryColor}"
+                                       FontSize="23" 
+                                       FontAttributes="Bold" 
+                                       Text="{Binding UserName}"/>
                             </Grid>
-                            <Label Text="{Binding Text}"/>
+                            <Label Text="{Binding Text}"
+                                   TextColor="{StaticResource SecondaryColor}"
+                                   MaxLines="5"/>
                         </VerticalStackLayout>
                     </Border>
                 </DataTemplate>

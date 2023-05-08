@@ -6,21 +6,78 @@
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
                     xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
                     xmlns:vm="clr-namespace:BookReservations.App.ViewModels"
+                    xmlns:c="clr-namespace:BookReservations.App.Converters"
+                    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    x:Name="ReservationRoot"
                     Title="Reservations">
 
-    <CollectionView ItemsSource="{Binding Reservations}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="api:ReservationModel">
-                <Border Margin="5">
-                    <Grid ColumnDefinitions="auto,*">
-                        <Label Grid.Column="1" Margin="20,0,0,0" Text="{Binding BookName}" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference RelationRoot}}" CommandParameter="{Binding BookId}"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </Grid>
-                </Border>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <c:CanCancelReservationConverter x:Key="CanCancelReservationConverter" />
+            <c:CanExtendReservationConverter x:Key="CanExtendReservationConverter" />
+            <c:ReservationToStringConverter x:Key="ReservationToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="auto, *">
+        <Picker Title="Select reservation status" 
+                Margin="5" 
+                ItemsSource="{Binding Statuses}" 
+                ItemDisplayBinding="{Binding Converter={StaticResource ReservationToStringConverter}}"
+                SelectedItem="{Binding SelectedStatus}">
+            <Picker.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding FilterReservationStatusCommand}"/>
+            </Picker.Behaviors>
+        </Picker>
+
+        <CollectionView ItemsSource="{Binding Reservations}" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="api:ReservationModel">
+                    <Border Margin="5"
+                            HeightRequest="60"
+                            BackgroundColor="{StaticResource Tertiary}">
+                        <Grid ColumnDefinitions="auto,*, auto">
+                            <Label Text="{Binding Status, Converter={StaticResource ReservationToStringConverter}}"
+                                    HorizontalOptions="Center"
+                                    FontAttributes="Bold"
+                                    ToolTipProperties.Text="Status"
+                                    VerticalOptions="Center"
+                                    TextColor="{StaticResource SecondaryColor}"/>
+                            <Label Grid.Column="1" 
+                                   Margin="20,0,0,0" 
+                                   TextColor="{StaticResource SecondaryColor}"
+                                   Text="{Binding BookName}" 
+                                   HorizontalOptions="StartAndExpand" 
+                                   VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference ReservationRoot}}" 
+                                                          CommandParameter="{Binding BookId}"/>
+                                    </Label.GestureRecognizers>
+                            </Label>
+                            <HorizontalStackLayout Grid.Column="2">
+                                <Button TextColor="{StaticResource PrimaryColor}" 
+                                        IsVisible="False" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        Command="{Binding Path=BindingContext.CancelOrExtendReservationCommand, Source={x:Reference ReservationRoot}}"
+                                        CommandParameter="{Binding}">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Status, Converter={StaticResource CanCancelReservationConverter}}" Value="True">
+                                                <Setter Property="Text" Value="Cancel"/>
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Status, Converter={StaticResource CanExtendReservationConverter}}" Value="True">
+                                                <Setter Property="Text" Value="Extend"/>
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                </Button>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </vw:BaseContentPage>

@@ -9,6 +9,7 @@
                     xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     xmlns:api="clr-namespace:BookReservations.Api.Client;assembly=BookReservations.Api.Client"
                     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                    BackgroundColor="{StaticResource PrimaryColor}"
                     Title="Wishlist">
     
     <ContentPage.ToolbarItems>
@@ -22,16 +23,27 @@
     <CollectionView ItemsSource="{Binding RelationInfos}">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="api:RelationInfoModel">
-                <Border Margin="5">
+                <Border Margin="5" BackgroundColor="{StaticResource Tertiary}">
                     <Grid ColumnDefinitions="auto,*">
-                        <CheckBox IsChecked="False" Color="Green" HorizontalOptions="Center" VerticalOptions="Center">
+                        <CheckBox IsChecked="False" 
+                                  Color="{StaticResource SecondaryColor}"
+                                  HorizontalOptions="Center" 
+                                  VerticalOptions="Center">
                             <CheckBox.Behaviors>
-                                <toolkit:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding Path=BindingContext.SelectRelationCommand, Source={x:Reference RelationRoot}}" CommandParameter="{Binding BookId}" />
+                                <toolkit:EventToCommandBehavior EventName="CheckedChanged" 
+                                                                Command="{Binding Path=BindingContext.SelectRelationCommand, Source={x:Reference RelationRoot}}" 
+                                                                CommandParameter="{Binding Id}" />
                             </CheckBox.Behaviors>
                         </CheckBox>
-                        <Label Grid.Column="1" Margin="20,0,0,0" Text="{Binding BookName}" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+                        <Label Grid.Column="1" 
+                               Margin="20,0,0,0" 
+                               Text="{Binding BookName}" 
+                               TextColor="{StaticResource SecondaryColor}"
+                               HorizontalOptions="StartAndExpand" 
+                               VerticalOptions="Center">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference RelationRoot}}" CommandParameter="{Binding BookId}"/>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference RelationRoot}}" 
+                                                      CommandParameter="{Binding BookId}"/>
                             </Label.GestureRecognizers>
                         </Label>
                     </Grid>

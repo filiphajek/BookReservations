@@ -8,25 +8,31 @@
                     xmlns:f="clr-namespace:BookReservations.App.Resources.Fonts"
                     xmlns:vw="clr-namespace:BookReservations.App.Views"
                     xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
+                    BackgroundColor="{StaticResource PrimaryColor}"
                     Title="{Binding Book.Name}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem>
+        <ToolbarItem Command="{Binding ReservateOrSubscribeCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" Glyph="{x:Static f:FontAwesomeIcons.Plus}" Size="30" />
+                <FontImageSource FontFamily="{x:Static f:Fonts.FontAwesome}" 
+                                 Glyph="{x:Static f:FontAwesomeIcons.Plus}" 
+                                 Size="30" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-    <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+    <RefreshView Grid.Row="1" 
+                 IsRefreshing="{Binding IsRefreshing}" 
+                 Command="{Binding RefreshCommand}">
         <Grid RowDefinitions="2*, 4*, auto">
             <Grid.GestureRecognizers>
-                <SwipeGestureRecognizer Direction="Left" Command="{Binding GoToReviewsCommand}"/>
+                <SwipeGestureRecognizer Direction="Left" 
+                                        Command="{Binding GoToReviewsCommand}"/>
             </Grid.GestureRecognizers>
             
             <Image Grid.Row="0"
-               Aspect="AspectFit"
-               BackgroundColor="Gray">
+                   Aspect="AspectFit"
+                   BackgroundColor="Gray">
                 <Image.Source>
                     <UriImageSource Uri="{Binding Book.Image}"/>
                 </Image.Source>
@@ -36,43 +42,66 @@
                 <VerticalStackLayout>
 
                     <HorizontalStackLayout Margin="7,0,0,0">
-                        <aloha:Rating Value="{Binding Rating}" IsEnabled="False"/>
-                        <Button Text="{Binding Book.Reviews.Count, StringFormat='{0} review(s)'}" Command="{Binding GoToReviewsCommand}"/>
+                        <aloha:Rating Value="{Binding Rating}" 
+                                      IsEnabled="False"/>
+                        <Button Text="{Binding Book.Reviews.Count, StringFormat='{0} review(s)'}"
+                                BackgroundColor="{StaticResource PrimaryColor}"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource SecondaryColor}"
+                                Command="{Binding GoToReviewsCommand}"/>
                     </HorizontalStackLayout>
 
                     <Grid Margin="7" ColumnDefinitions="*,*,*">
-                        <Button BackgroundColor="Green" Command="{Binding ReservateOrSubscribeCommand}">
+                        <Button BackgroundColor="{StaticResource SecondaryColor}" 
+                                Text="Reservate"
+                                Command="{Binding ReservateOrSubscribeCommand}">
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Book.IsAvailable}" Value="True">
-                                    <Setter Property="Text" Value="Reservate"/>
-                                </DataTrigger>
                                 <DataTrigger TargetType="Button" Binding="{Binding Book.IsAvailable}" Value="False">
                                     <Setter Property="Text" Value="Subscribe"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInReservations}" Value="True">
                                     <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Grid.Column="2" Text="Add to wishlist" BackgroundColor="Green" Command="{Binding AddToWishlistCommand}">
+                        <Button Grid.Column="2" 
+                                Text="Add to wishlist" 
+                                BackgroundColor="{StaticResource SecondaryColor}" 
+                                Command="{Binding AddToWishlistCommand}">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInWishlist}" Value="True">
                                     <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
                     </Grid>
 
-                    <Label Text="Description" Margin="7,7,7,0" FontSize="Header" FontAttributes="Bold"/>
-                    <Label FontSize="Body"
-                       Text="{Binding Book.Description}"
-                       Margin="16"/>
-                    <Label Text="Authors" FontSize="Header" Margin="7,7,7,0" FontAttributes="Bold"/>
+                    <Label 
+                        Text="Description" 
+                        Margin="7,7,7,0" 
+                        TextColor="{StaticResource SecondaryColor}"
+                        FontSize="23" 
+                        FontAttributes="Bold"/>
+                    <Label 
+                        FontSize="Body"
+                        TextColor="{StaticResource SecondaryColor}"
+                        Text="{Binding Book.Description}"
+                        Margin="16"/>
+                    <Label Text="Authors" 
+                           TextColor="{StaticResource SecondaryColor}"
+                           FontSize="23" 
+                           Margin="7,7,7,0" 
+                           FontAttributes="Bold"/>
                     <CollectionView ItemsSource="{Binding Book.Authors}" ItemsLayout="HorizontalList">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="api:AuthorModel">
-                                <Border Margin="2" BackgroundColor="BlueViolet">
-                                    <Label HorizontalOptions="Center" VerticalOptions="Center">
+                                <Border Margin="2" 
+                                        BackgroundColor="{StaticResource Tertiary}">
+                                    <Label HorizontalOptions="Center" 
+                                           TextColor="{StaticResource SecondaryColor}"
+                                           VerticalOptions="Center">
                                         <Label.Text>
                                             <MultiBinding StringFormat="{}{0} {1}">
                                                 <Binding Path="FirstName" />

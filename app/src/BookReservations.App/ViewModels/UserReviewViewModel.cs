@@ -23,17 +23,34 @@ public partial class UserReviewViewModel : ObservableObject, IViewModel
     [RelayCommand]
     private async Task SaveReviewAsync()
     {
-        await apiClient.AddReviewAsync(Review);
+        try
+        {
+            await apiClient.AddReviewAsync(Review);
+        }
+        catch (SwaggerException ex)
+        {
+            if (ex.StatusCode == 204)
+            {
+                await Shell.Current.DisplayAlert("Error", "You can not add review, first, read the book", "Ok");
+                return;
+            }
+            await Shell.Current.DisplayAlert("Error", "Something went wrong, try again", "Ok");
+        }
+        finally
+        {
+            await Shell.Current.GoToAsync("..");
+        }
     }
 
     [RelayCommand]
     private async Task DeleteReviewAsync()
     {
-        if (Review is null || Review.Id == 0)
+        if (Review is not null && Review.Id != 0)
         {
-            return;
+            await apiClient.DeleteReviewAsync(Review.Id);
         }
         await apiClient.DeleteReviewAsync(Review.Id);
+        await Shell.Current.GoToAsync("..");
     }
 
     public Task InitializeAsync() => Task.CompletedTask;
