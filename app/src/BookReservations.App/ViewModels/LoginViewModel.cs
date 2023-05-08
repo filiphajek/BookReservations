@@ -72,7 +72,7 @@ public partial class LoginViewModel : ObservableObject, IViewModel
     [RelayCommand]
     private async Task GoogleSignOnAsync()
     {
-        await Task.Delay(10);
+        await Shell.Current.DisplayAlert("Warning", "Google sign on is not supported yet", "Ok");
     }
 
     public Task InitializeAsync() => Task.CompletedTask;

@@ -15,14 +15,16 @@ namespace BookReservations.Api.BL.Commands;
 public class UpdateReservationStatusCommandHandler : CommandHandler<UpdateReservationStatusCommand, ErrorPropertyResponse>
 {
     private readonly IRepository<Reservation> repository;
+    private readonly IRepository<Book> bookRepository;
     private readonly IQuery<Reservation> query;
     private readonly IUnitOfWorkProvider unitOfWorkProvider;
 
-    public UpdateReservationStatusCommandHandler(IRepository<Reservation> repository, IMapper mapper, IUnitOfWorkProvider unitOfWorkProvider, IQuery<Reservation> query) : base(mapper)
+    public UpdateReservationStatusCommandHandler(IRepository<Reservation> repository, IMapper mapper, IUnitOfWorkProvider unitOfWorkProvider, IQuery<Reservation> query, IRepository<Book> bookRepository) : base(mapper)
     {
         this.repository = repository;
         this.unitOfWorkProvider = unitOfWorkProvider;
         this.query = query;
+        this.bookRepository = bookRepository;
     }
 
     public override async Task<ErrorPropertyResponse> Handle(UpdateReservationStatusCommand request, CancellationToken cancellationToken)
@@ -46,7 +48,7 @@ public class UpdateReservationStatusCommandHandler : CommandHandler<UpdateReserv
             }
 
             reservation.Status = requestedUpdate.Status;
-            if (reservation.Status == ReservationStatus.Returned || reservation.Status == ReservationStatus.Returned)
+            if (reservation.Status == ReservationStatus.Returned || reservation.Status == ReservationStatus.Cancelled)
             {
                 reservation.Book.AvailableAmount++;
             }
@@ -55,6 +57,7 @@ public class UpdateReservationStatusCommandHandler : CommandHandler<UpdateReserv
                 reservation.To = reservation.To.AddDays(14);
             }
             await repository.UpdateAsync(reservation, cancellationToken);
+            await bookRepository.UpdateAsync(reservation.Book, cancellationToken);
         }
         await unitOfWorkProvider.UnitOfWork.CommitAsync(cancellationToken);
 

@@ -78,11 +78,22 @@ public partial class BookViewModel : ObservableObject, IViewModel
     [RelayCommand]
     private async Task ReservateOrSubscribeAsync()
     {
+        if (BookUserModel.IsInReservations)
+        {
+            return;
+        }
         if (!Book.IsAvailable)
         {
-            await apiClient.SubscribeToBooksAsync(new[] { Id });
-            var toast = Toast.Make("Subscribed", ToastDuration.Long);
-            await toast.Show();
+            try
+            {
+                await apiClient.SubscribeToBooksAsync(new[] { Id });
+                await Toast.Make("Subscribed", ToastDuration.Long).Show();
+            }
+            catch (SwaggerException ex)
+            {
+                var err = ex.StatusCode == 204 ? "Already subscribed" : "Something went wrong";
+                await Toast.Make(err, ToastDuration.Long).Show();
+            }
             return;
         }
         var popup = new AddReservationPopup();
@@ -100,7 +111,8 @@ public partial class BookViewModel : ObservableObject, IViewModel
                 await Shell.Current.DisplayAlert("Error", "Something went wrong, try again", "Ok");
                 return;
             }
-            await Shell.Current.CurrentPage.DisplayAlert("Success", "You create a reservation", "Ok");
+            await Shell.Current.CurrentPage.DisplayAlert("Success", "You created a reservation", "Ok");
+            await InitializeAsync();
         }
     }
 
@@ -116,7 +128,7 @@ public partial class BookViewModel : ObservableObject, IViewModel
         var detail = await apiClient.GetBookDetailAsync(Id);
         Book = detail.Result;
         Book.IsAvailable = (await apiClient.IsBookAvailableAsync(Id)).StatusCode == 200;
-        Rating = (float)detail.Result.Reviews.Sum(i => i.Rating) / detail.Result.Reviews.Count;
+        Rating = detail.Result.Reviews.Count == 0 ? 0 : (float)detail.Result.Reviews.Sum(i => i.Rating) / detail.Result.Reviews.Count;
         UserReview = detail.Result.Reviews.FirstOrDefault(i => i.UserId == userId);
         IsRefreshing = false;
     }

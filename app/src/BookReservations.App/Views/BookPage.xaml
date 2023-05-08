@@ -43,12 +43,36 @@
 
                     <HorizontalStackLayout Margin="7,0,0,0">
                         <aloha:Rating Value="{Binding Rating}" 
+                                      IsReadOnly="True"
                                       IsEnabled="False"/>
                         <Button Text="{Binding Book.Reviews.Count, StringFormat='{0} review(s)'}"
                                 BackgroundColor="{StaticResource PrimaryColor}"
                                 FontAttributes="Bold"
                                 TextColor="{StaticResource SecondaryColor}"
                                 Command="{Binding GoToReviewsCommand}"/>
+                        <Label Text="{Static f:FontAwesomeIcons.Check}" 
+                               FontFamily="{Static f:Fonts.FontAwesome}"
+                               FontAttributes="Bold" 
+                               TextColor="Green" 
+                               FontSize="25" 
+                               Margin="100,0,0,0"
+                               ToolTipProperties.Text="Available"
+                               HorizontalOptions="End"
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" 
+                                             Binding="{Binding Book.IsAvailable}" 
+                                             Value="False">
+                                    <Setter Property="TextColor" 
+                                            Value="{StaticResource ErrorColor}" />
+                                    <Setter Property="ToolTipProperties.Text" 
+                                            Value="Not available" />
+                                    <Setter Property="Text" 
+                                            Value="{Static f:FontAwesomeIcons.ExclamationCircle}"  />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+
                     </HorizontalStackLayout>
 
                     <Grid Margin="7" ColumnDefinitions="*,*,*">
@@ -58,10 +82,12 @@
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button" Binding="{Binding Book.IsAvailable}" Value="False">
                                     <Setter Property="Text" Value="Subscribe"/>
+                                    <Setter Property="ToolTipProperties.Text" Value="Book is not available, subscribe to the news"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInReservations}" Value="True">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
+                                    <Setter Property="ToolTipProperties.Text" Value="You have reservated this book"/>
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -73,6 +99,7 @@
                                 <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInWishlist}" Value="True">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
+                                    <Setter Property="ToolTipProperties.Text" Value="Already in your wishlist"/>
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>

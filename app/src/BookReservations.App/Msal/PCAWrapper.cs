@@ -9,8 +9,8 @@ public class PCAWrapper
 {
     private readonly IPublicClientApplication PCA;
 
-    private const string ClientId = "[REPLACE WITH YOUR CLIENT ID]";
-    private const string TenantId = "[REPLACE WITH YOUR TENANT ID]";
+    private const string ClientId = "707b9ce6-f2e3-48da-9649-fc2586c71205";
+    private const string TenantId = "f2f7ce9e-e999-4d27-8d95-23ef635c3f8f";
     private const string Authority = $"https://login.microsoftonline.com/{TenantId}";
     public static string[] Scopes = { $"api://{ClientId}/access_as_user" };
 
