@@ -4,10 +4,11 @@
              x:Class="BookReservations.App.Views.AddReservationPopup"
              xmlns:vw="clr-namespace:BookReservations.App.ViewModels"
              x:DataType="vw:AddReservationViewModel"
+             xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" Color="Transparent">
     <Border Margin="15" BackgroundColor="White">
         <VerticalStackLayout>
-            <Label Text="Make a reservation"
+            <Label Text="{x:Static t:ShellTexts.MakeReservation}"
                 FontAttributes="Bold"
                 FontSize="18"
                 VerticalOptions="Center" 

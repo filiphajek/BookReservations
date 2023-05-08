@@ -8,7 +8,8 @@ public partial class App : Application
     public App(IServiceProvider serviceProvider, IMessengerService messengerService)
     {
         InitializeComponent();
-        SetLanguage();
+        var preferences = serviceProvider.GetRequiredService<IPreferences>();
+        SetLanguage(preferences);
 
         messengerService.Register<ChangeNavigationModeMessage>(i =>
         {
@@ -29,10 +30,10 @@ public partial class App : Application
         return window;
     }
 
-    private static void SetLanguage()
+    private static void SetLanguage(IPreferences preferences)
     {
-        var culture = "cs";
-        Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-        Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
+        var language = preferences.Get("booksres-language", "en");
+        Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(language);
+        Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(language);
     }
 }

@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookReservations.App.Views.AboutPage"
-             Title="About">
+             xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
+             Title="{x:Static t:ShellTexts.About_Title}">
     <VerticalStackLayout>
         <Label Margin="10"
             Text="Author: Filip Hajek" />

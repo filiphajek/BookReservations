@@ -129,4 +129,22 @@
   <data name="Wishlist_Title" xml:space="preserve">
     <value>Wishlist</value>
   </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MakeReservation" xml:space="preserve">
+    <value>Make a reservation</value>
+  </data>
+  <data name="Review_Title" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="Subscriptions_Title" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="UserDetail" xml:space="preserve">
+    <value>User detail</value>
+  </data>
+  <data name="WriteReview" xml:space="preserve">
+    <value>Write a review</value>
+  </data>
 </root>

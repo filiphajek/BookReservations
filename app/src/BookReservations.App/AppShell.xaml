@@ -68,7 +68,8 @@
 
     <Shell.FlyoutFooter>
         <Button TextColor="{StaticResource PrimaryColor}" 
-                Text="About" Margin="20" 
+                Text="{x:Static t:ShellTexts.About_Title}"
+                Margin="20" 
                 Clicked="AboutButtonClicked"/>
     </Shell.FlyoutFooter>
 
@@ -77,7 +78,7 @@
             <FontImageSource Glyph="{Static f:FontAwesomeIcons.Book}" 
                              FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Books" 
+        <ShellContent Title="{x:Static t:ShellTexts.Settings_Title}"
                       ContentTemplate="{DataTemplate views:CatalogPage}" 
                       Route="books" />
     </FlyoutItem>
@@ -88,29 +89,29 @@
                              FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Books" 
+        <ShellContent Title="{x:Static t:ShellTexts.Reservations_Title}"
                       ContentTemplate="{DataTemplate views:ReservationsPage}" 
                       Route="reservations" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Wishlist">
+    <FlyoutItem Title="{x:Static t:ShellTexts.Wishlist_Title}">
         <FlyoutItem.Icon>
             <FontImageSource Glyph="{Static f:FontAwesomeIcons.Heart}" 
                              FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Wishlist" 
+        <ShellContent Title="{x:Static t:ShellTexts.Wishlist_Title}"
                       ContentTemplate="{DataTemplate views:WishlistPage}" 
                       Route="wishlist" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Subscriptions">
+    <FlyoutItem Title="{x:Static t:ShellTexts.Subscriptions_Title}">
         <FlyoutItem.Icon>
             <FontImageSource Glyph="{Static f:FontAwesomeIcons.PlusCircle}" 
                              FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Subscriptions" 
+        <ShellContent Title="{x:Static t:ShellTexts.Subscriptions_Title}"
                       ContentTemplate="{DataTemplate views:SubscriptionPage}" 
                       Route="subscriptions" />
     </FlyoutItem>
@@ -121,7 +122,7 @@
                              FontFamily="{Static f:Fonts.FontAwesome}"/>
         </FlyoutItem.Icon>
 
-        <ShellContent Title="Books" 
+        <ShellContent Title="{x:Static t:ShellTexts.Settings_Title}" 
                       ContentTemplate="{DataTemplate views:SettingsPage}" 
                       Route="settings" />
     </FlyoutItem>

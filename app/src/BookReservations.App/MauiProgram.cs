@@ -33,6 +33,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<MsPublicClient>();
         builder.Services.AddSingleton(SecureStorage.Default);
+        builder.Services.AddSingleton(Preferences.Default);
         builder.Services.AddSingleton<IMessengerService, MessengerService>();
         builder.Services.AddSingleton<IApiClient>(_ => new ApiClient(builder.Configuration["ApiUrl"], new HttpClient()));
         builder.Services.AddTransient<AppShell>();

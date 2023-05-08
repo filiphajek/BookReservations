@@ -63,10 +63,26 @@
                 <c:CustomImageButton Image="microsoftlogo.png" 
                                      Command="{Binding MsSignOnCommand}" 
                                      Color="{StaticResource Gray500}">
-                    <Label HorizontalTextAlignment="Center" 
-                           VerticalTextAlignment="Center" 
-                           FontSize="17" 
-                           Text="Sign in with Microsoft"/>
+                    <VerticalStackLayout HorizontalOptions="Center" 
+                                         VerticalOptions="Center">
+                        <Label HorizontalTextAlignment="Center" 
+                               VerticalTextAlignment="Center" 
+                               FontSize="17" 
+                               Text="Sign in with Microsoft">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" 
+                                                 Binding="{Binding MsSignOnCommand.IsRunning}" 
+                                                 Value="True">
+                                        <Setter Property="IsVisible" Value="False"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                        </Label>
+                        <ActivityIndicator HeightRequest="30" 
+                                           WidthRequest="30"
+                                           Color="{StaticResource PrimaryColor}"
+                                           IsRunning="{Binding MsSignOnCommand.IsRunning}"
+                                           IsVisible="{Binding MsSignOnCommand.IsRunning}" />
+                    </VerticalStackLayout>
                 </c:CustomImageButton>
 
                 <c:CustomImageButton 

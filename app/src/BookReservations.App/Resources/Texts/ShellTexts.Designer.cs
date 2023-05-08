@@ -22,8 +22,7 @@ namespace BookReservations.App.Resources.Texts {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ShellTexts
-    {
+    public class ShellTexts {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -62,7 +61,16 @@ namespace BookReservations.App.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply.
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string About_Title {
+            get {
+                return ResourceManager.GetString("About_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Books.
         /// </summary>
         public static string Books_Title {
             get {
@@ -71,22 +79,74 @@ namespace BookReservations.App.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the localization of the application from the available options..
+        ///   Looks up a localized string similar to Make a reservation.
         /// </summary>
-        public static string Reservations_Title
-        {
+        public static string MakeReservation {
+            get {
+                return ResourceManager.GetString("MakeReservation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reservations.
+        /// </summary>
+        public static string Reservations_Title {
             get {
                 return ResourceManager.GetString("Reservations_Title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language.
+        ///   Looks up a localized string similar to Reviews.
         /// </summary>
-        public static string Settings_Title
-        {
+        public static string Review_Title {
+            get {
+                return ResourceManager.GetString("Review_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings_Title {
             get {
                 return ResourceManager.GetString("Settings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscriptions.
+        /// </summary>
+        public static string Subscriptions_Title {
+            get {
+                return ResourceManager.GetString("Subscriptions_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User detail.
+        /// </summary>
+        public static string UserDetail {
+            get {
+                return ResourceManager.GetString("UserDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wishlist.
+        /// </summary>
+        public static string Wishlist_Title {
+            get {
+                return ResourceManager.GetString("Wishlist_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write a review.
+        /// </summary>
+        public static string WriteReview {
+            get {
+                return ResourceManager.GetString("WriteReview", resourceCulture);
             }
         }
     }

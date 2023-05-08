@@ -105,9 +105,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Resources\Texts\ShellTexts.en.resx">
-	    <Generator></Generator>
-	  </EmbeddedResource>
+		<Compile Update="Resources\Texts\ShellTexts.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ShellTexts.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\Texts\ShellTexts.cs.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Texts\ShellTexts.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ShellTexts.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
