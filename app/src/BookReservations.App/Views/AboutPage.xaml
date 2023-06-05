@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BookReservations.App.Views.AboutPage"
              xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
+             BackgroundColor="{StaticResource PrimaryColor}"
              Title="{x:Static t:ShellTexts.About_Title}">
     <VerticalStackLayout>
         <Label Margin="10"

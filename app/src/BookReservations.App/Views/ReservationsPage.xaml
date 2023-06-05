@@ -75,6 +75,10 @@
                                         </Button.Triggers>
                                 </Button>
                             </HorizontalStackLayout>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference ReservationRoot}}" 
+                                                          CommandParameter="{Binding BookId}"/>
+                            </Grid.GestureRecognizers>
                         </Grid>
                     </Border>
                 </DataTemplate>

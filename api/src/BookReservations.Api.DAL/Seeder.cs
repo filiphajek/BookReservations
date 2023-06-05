@@ -43,16 +43,151 @@ public class Seeder : ISeeder
     public void Seed(ModelBuilder modelBuilder)
     {
         var f = new Faker();
-        Randomizer.Seed = new Random(1338);
+        Randomizer.Seed = new Random(1825);
         Bogus.DataSets.Date.SystemClock = () => DateTime.Parse("8/8/2017 2:00 PM");
         int globalIndex = 10;
 
+        var fakeBookNames = new[]
+        {
+            "The Lost City",
+            "The Silent Conspiracy",
+            "Echoes in the Wind",
+            "Thieves of the Sky",
+            "The Poisoned Legacy",
+            "Shadows of the Dark",
+            "The Secret of the Lost Treasure",
+            "The Last Chance for Redemption",
+            "The Kingdom of Ice and Fire",
+            "Whispers from the Abyss",
+            "Through the Winding Forest",
+            "The Cursed Island",
+            "The Phantom Thief's Heist",
+            "The Tides of Fate",
+            "The Alchemist's Secret",
+            "The Forgotten Kingdom",
+            "The Shadow of Death",
+            "The Lost Oasis",
+            "The Crystal Cavern",
+            "The Broken Blade",
+            "The Secret of the Sleeping Sphinx",
+            "The Ghosts of Nightfall Manor",
+            "The Dreaded Curse of the Werewolf",
+            "The Enchanted Garden",
+            "The Sands of Time",
+            "The Chosen One",
+            "The Rise of the Dragon Queen",
+            "The Tales of a Wandering Bard",
+            "The Dark Knight's Revenge",
+            "The Last Hope for Humanity",
+            "The Escape from Alcatraz",
+            "The Haunting of Hollow Hills",
+            "The Legend of the Golden Fleece",
+            "The Age of Magic",
+            "The Battle for the Sunken City",
+            "The Prophecy of the Red Moon",
+            "The Hunters of the Lost Ark",
+            "The Keeper of the Crystal Kingdom",
+            "The Secret Society of Alchemists",
+            "The Voyage of the Pirate Queen",
+            "The Curse of the Black Pearl",
+            "The Secret of the Sunken Temple",
+            "The Tomb of the Sphinx Queen",
+            "The Silence of the Lambs",
+            "The Secret of the Abandoned Asylum",
+            "The Scandalous Tale of the Duchess",
+            "The Case of the Missing Heirloom",
+            "The Mystery of the Lost Locket",
+            "The Shadowy Depths of the Underworld",
+            "The Rise of the Dark Lord",
+            "The Keeper of the Forbidden Library",
+            "The Cursed Diamond",
+        };
+
+        var fakeBookDescriptions = new[]
+        {
+            "A thrilling adventure to uncover the secrets of a lost city.",
+            "A top-secret mission to uncover the truth about a hidden conspiracy.",
+            "A journey through time to search for long-lost echoes.",
+            "An epic tale of sky-high heists and daring escapades.",
+            "A deadly legacy that poisons everything in its path.",
+            "A dark and mysterious world filled with shadows and secrets.",
+            "A perilous quest to recover a lost treasure.",
+            "A chance for redemption in the face of impossible odds.",
+            "A clash of elemental forces in a frozen wasteland.",
+            "A haunting tale of whispers from beyond the veil.",
+            "A mystical journey through the winding forest.",
+            "A cursed island filled with danger and mystery.",
+            "A daring heist planned and executed by the phantom thief.",
+            "An epic tale of fate and fortune on the high seas.",
+            "The alchemist's greatest secret weight in the balance.",
+            "An unknown kingdom with a storied past.",
+            "A shadowy figure looming over all things.",
+            "A lost oasis hidden away from the modern world.",
+            "A treacherous journey through a dangerous crystal cavern.",
+            "A broken blade that can mean everything.",
+            "The secret of the sleeping sphinx remains only a mystery.",
+            "An old English manor house haunted by ghosts.",
+            "The dread curse of the werewolf looms over all.",
+            "A garden filled with enchantment and mystery.",
+            "The sands of time run ever slower.",
+            "The one destined to rise above all else.",
+            "The dragon queen leads her armies to battle against all foes.",
+            "The wandering bard moves from town to town.",
+            "The dark knight stands against all who oppose him.",
+            "The last hope for the future of humanity.",
+            "A daring escape from the inescapable Alcatraz.",
+            "Hollow Hills is haunted by a terrifying evil.",
+            "The legend of the Golden Fleece endures to this day.",
+            "The magical age is a time unlike any other.",
+            "A city long sunk beneath the sea fights on.",
+            "The prophecy of the red moon is finally at hand.",
+            "A group of hunters searches for the lost Ark.",
+            "The mighty kingdom protected by a single keeper.",
+            "The secrets of the alchemists remain only with their inner circle.",
+            "The pirate queen sets sail on a dangerous voyage.",
+            "The curse of the black pearl haunts all who seek it.",
+            "An ancient sunken temple holds secrets too great to bear.",
+            "The tomb of the Sphinx Queen remains hidden from all.",
+            "The silence of the lambs is deafening.",
+            "The abandoned asylum remains shrouded in mystery.",
+            "The scandalous tale of the Duchess is too shocking for words.",
+            "The missing heirloom sets off a chain of events with dire consequences.",
+            "The mystery of the lost locket still remains unsolved.",
+            "The shadowy depths of the underworld are not for the faint of heart.",
+            "The rise of the dark lord threatens to undo all of civilization.",
+            "The forbidden library's keeper is both its protector and prisoner.",
+            "The cursed diamond brings nothing but misfortune to all who possess it.",
+        };
+
+        var fakeReviews = new[]
+        {
+            "An engaging journey through celestial mysteries with the right mix of science and human drama. A few plot holes mar an otherwise exciting narrative.",
+            "A post-apocalyptic tale that challenges the norms. Vivid world-building and multidimensional characters make it a compelling read.",
+            "A thoughtful exploration of human fortitude in the face of adversity. The intertwining personal stories might tug at your heartstrings, but the prose can be overly verbose.",
+            "A captivating blend of romance and time-travel. Despite a few predictable turns, the love story is beautifully portrayed.",
+            "Russo's powerful storytelling and empathetic characterization shine in this tale of family and forgiveness in a Sicilian village.",
+            "A lucid explanation of complex quantum physics phenomena for laymen. Occasionally, the author's enthusiasm for detail can be overwhelming",
+            "An ambitious, multilayered epic fantasy with exquisite world-building. Its pacing might be slow for some readers.",
+            "A suspenseful thriller that effectively captures the heat and horror of a small town's darkest secrets.",
+            "Greene beautifully interweaves quantum mechanics and philosophy. The science is heavy, so be prepared for a challenging but rewarding read.",
+            "A moving story about the complexities of mother-daughter relationships. Shafak's beautiful prose is a pleasure to read, even when the narrative meanders.",
+            "A collection of short stories that evokes a surreal, dreamlike atmosphere. Some stories, however, feel underdeveloped.",
+            "A thrilling blend of ancient myths and modern mysteries. The pacing is inconsistent but the overall intrigue keeps you engaged.",
+            "A thrilling exploration of artificial intelligence. While exciting, it falls into familiar Dan Brown formula.",
+            "An impactful novel about the struggle for freedom and identity in post-colonial Nigeria. Adichie's writing is rich and evocative.",
+            "A final gift from Hawking that wonderfully breaks down complex concepts of time and space. Occasional scientific jargon may be daunting for some.",
+            "A deeply thoughtful exploration of silence and solitude. The philosophical discussions can sometimes overshadow the plot.",
+            "A well-crafted tale of myths and modernity. The story meanders at times, but Gaiman's writing always shines.",
+            "Another thrilling installment in the Chief Inspector Gamache series. Penny's understanding of human nature brings depth to this murder mystery.",
+            "An intricately woven story of memory and identity. The slow pacing may not be for everyone, but the themes are deeply thought-provoking.",
+        };
+
         var generatedBooks = new Faker<Book>()
-                .RuleFor(b => b.Name, f => string.Join(" ", f.Lorem.Words(2)))
+                .RuleFor(b => b.Name, f => fakeBookNames[Random.Shared.Next(0, fakeBookNames.Length - 1)])
                 .RuleFor(b => b.Isbn, f => f.Random.Replace("###-#-####-####-#"))
                 .RuleFor(b => b.AvailableAmount, f => f.Random.Number(0, 5))
                 .RuleFor(b => b.Language, f => f.PickRandom(new[] { "Czech", "Slovak", "English", "German", "French", "Spanish" }))
-                .RuleFor(b => b.Description, f => f.Lorem.Paragraphs())
+                .RuleFor(b => b.Description, f => fakeBookDescriptions[Random.Shared.Next(0, fakeBookDescriptions.Length - 1)])
                 .RuleFor(b => b.Image, f => f.PickRandom(new[]
                 {
                     "https://img.freepik.com/free-vector/open-blue-book-white_1308-69339.jpg?w=2000",
@@ -98,9 +233,9 @@ public class Seeder : ISeeder
             })
             .Generate(70);
 
-        foreach (var (book, index) in generatedBooks.Select((book, index) => (book, index + 10)))
+        foreach (var book in generatedBooks)
         {
-            var bookWithoutAuthor = generatedBookAuthors.FirstOrDefault(i => book.Id == i.Id);
+            var bookWithoutAuthor = generatedBookAuthors.FirstOrDefault(i => book.Id == i.BookId);
             if (bookWithoutAuthor is null)
             {
                 var randomNumber = f.Random.Number(15, generatedAuthors.Count - 5);
@@ -108,8 +243,9 @@ public class Seeder : ISeeder
                 {
                     BookId = book.Id,
                     AuthorId = generatedAuthors.First(i => i.Id == randomNumber).Id,
-                    Id = generatedBookAuthors.Count + 1,
+                    Id = globalIndex,
                 });
+                globalIndex++;
             }
         }
 
@@ -146,7 +282,7 @@ public class Seeder : ISeeder
 
         var generatedReviews = new Faker<Review>()
             .RuleFor(i => i.Rating, i => i.Random.Number(1, 5))
-            .RuleFor(i => i.Text, i => i.Lorem.Sentences(i.Random.Number(1, 4)))
+            .RuleFor(i => i.Text, i => f.PickRandom(fakeReviews))
             .RuleFor(i => i.BookId, i => i.PickRandom(generatedBooks.Select(i => i.Id)))
             .FinishWith((i, j) =>
             {
@@ -156,7 +292,7 @@ public class Seeder : ISeeder
             .Generate(40)
             .Concat(new Faker<Review>()
             .RuleFor(i => i.Rating, i => i.Random.Number(1, 5))
-            .RuleFor(i => i.Text, i => i.Lorem.Sentences(i.Random.Number(1, 4)))
+            .RuleFor(i => i.Text, i => f.PickRandom(fakeReviews))
             .RuleFor(i => i.BookId, i => i.PickRandom(generatedBooks.Select(i => i.Id)))
             .RuleFor(i => i.UserId, i => i.PickRandom(generatedUsers.Select(i => i.Id)))
             .FinishWith((i, j) =>

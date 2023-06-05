@@ -79,11 +79,29 @@ namespace BookReservations.App.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is available.
+        /// </summary>
+        public static string IsAvailable {
+            get {
+                return ResourceManager.GetString("IsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make a reservation.
         /// </summary>
         public static string MakeReservation {
             get {
                 return ResourceManager.GetString("MakeReservation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order descending.
+        /// </summary>
+        public static string OrderDescending {
+            get {
+                return ResourceManager.GetString("OrderDescending", resourceCulture);
             }
         }
         
@@ -102,6 +120,15 @@ namespace BookReservations.App.Resources.Texts {
         public static string Review_Title {
             get {
                 return ResourceManager.GetString("Review_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search books.
+        /// </summary>
+        public static string SearchBooks {
+            get {
+                return ResourceManager.GetString("SearchBooks", resourceCulture);
             }
         }
         

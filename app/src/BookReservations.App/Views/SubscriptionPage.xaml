@@ -47,6 +47,10 @@
                                                       CommandParameter="{Binding BookId}"/>
                             </Label.GestureRecognizers>
                         </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Path=BindingContext.GoToBookDetailCommand, Source={x:Reference RelationRoot}}" 
+                                                      CommandParameter="{Binding BookId}"/>
+                        </Grid.GestureRecognizers>
                     </Grid>
                 </Border>
             </DataTemplate>

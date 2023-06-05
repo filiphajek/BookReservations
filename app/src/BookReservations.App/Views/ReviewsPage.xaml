@@ -38,7 +38,7 @@
                                        HorizontalOptions="Center" 
                                        VerticalOptions="Center" 
                                        TextColor="{StaticResource SecondaryColor}"
-                                       FontSize="23" 
+                                       FontSize="21" 
                                        FontAttributes="Bold" 
                                        Text="{Binding UserName}"/>
                             </Grid>

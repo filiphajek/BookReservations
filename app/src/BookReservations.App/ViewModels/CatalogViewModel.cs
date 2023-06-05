@@ -74,6 +74,12 @@ public partial class CatalogViewModel : ObservableObject, IViewModel
         });
     }
 
+    [RelayCommand]
+    public void ChangeIsAvailable() => IsAvailable = !IsAvailable;
+
+    [RelayCommand]
+    public void ChangeIsAscending() => Ascending = !Ascending;
+
     private async Task GetBookAsync()
     {
         if (hasAllPages)

@@ -6,9 +6,10 @@
                     x:DataType="vm:SettingsViewModel"
                     x:Class="BookReservations.App.Views.SettingsPage"
                     xmlns:t="clr-namespace:BookReservations.App.Resources.Texts"
+                    BackgroundColor="{StaticResource PrimaryColor}"
                     Title="{x:Static t:ShellTexts.Settings_Title}">
     <VerticalStackLayout>
-        <Picker x:Name="picker" Title="Language" Margin="5" SelectedItem="{Binding SelectedLanguage, Mode=OneWayToSource}">
+        <Picker x:Name="picker" Title="Language" Margin="5" SelectedItem="{Binding SelectedLanguage}">
             <Picker.Items>
                 <x:String>CS</x:String>
                 <x:String>EN</x:String>

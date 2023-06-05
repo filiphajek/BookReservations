@@ -6,6 +6,7 @@
 
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="PrimaryColor">#512BD4</Color>
+    <Color x:Key="MenuColor">#2b44d4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="SecondaryColor">#DFD8F7</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>

@@ -42,14 +42,20 @@
                 <VerticalStackLayout>
 
                     <HorizontalStackLayout Margin="7,0,0,0">
-                        <aloha:Rating Value="{Binding Rating}" 
-                                      IsReadOnly="True"
-                                      IsEnabled="False"/>
-                        <Button Text="{Binding Book.Reviews.Count, StringFormat='{0} review(s)'}"
+                        <HorizontalStackLayout>
+                            <aloha:Rating Value="{Binding Rating}" 
+                                      IsReadOnly="True">
+                                <aloha:Rating.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoToReviewsCommand}" NumberOfTapsRequired="1"/>
+                                </aloha:Rating.GestureRecognizers>
+                            </aloha:Rating>
+                            <Button Text="{Binding Book.Reviews.Count, StringFormat='{0} review(s)'}"
                                 BackgroundColor="{StaticResource PrimaryColor}"
                                 FontAttributes="Bold"
                                 TextColor="{StaticResource SecondaryColor}"
                                 Command="{Binding GoToReviewsCommand}"/>
+                        </HorizontalStackLayout>
+
                         <Label Text="{Static f:FontAwesomeIcons.Check}" 
                                FontFamily="{Static f:Fonts.FontAwesome}"
                                FontAttributes="Bold" 
@@ -99,7 +105,7 @@
                                 <DataTrigger TargetType="Button" Binding="{Binding BookUserModel.IsInWishlist}" Value="True">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
-                                    <Setter Property="ToolTipProperties.Text" Value="Already in your wishlist"/>
+                                    <Setter Property="Text" Value="In wishlist"/>
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>

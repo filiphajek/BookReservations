@@ -16,26 +16,32 @@
 
     <Grid RowDefinitions="auto, *">
         <Grid Margin="10" RowDefinitions="auto, auto" ColumnDefinitions="auto,*,auto">
-            <Entry Placeholder="Search book" 
+            <Entry Placeholder="{x:Static t:ShellTexts.SearchBooks}" 
                    Text="{Binding SearchText}" 
                    TextColor="{StaticResource WhiteColor}"
                    Grid.ColumnSpan="3" 
                    Grid.Column="0"/>
 
             <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0">
-                <Label Text="Is available" 
+                <Label Text="{x:Static t:ShellTexts.IsAvailable}" 
                        VerticalOptions="Center"
                        TextColor="{StaticResource WhiteColor}" />
                 <CheckBox IsChecked="{Binding IsAvailable}" 
                           Color="{StaticResource WhiteColor}"/>
+                <HorizontalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeIsAvailableCommand}"/>
+                </HorizontalStackLayout.GestureRecognizers>
             </HorizontalStackLayout>
 
             <HorizontalStackLayout Grid.Row="1" Margin="5,0,0,0" Grid.Column="2">
-                <Label Text="Order descending" 
+                <Label Text="{x:Static t:ShellTexts.OrderDescending}" 
                        TextColor="{StaticResource WhiteColor}" 
                        VerticalOptions="Center"/>
                 <CheckBox IsChecked="{Binding Ascending}" 
                           Color="{StaticResource WhiteColor}" />
+                <HorizontalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeIsAscendingCommand}"/>
+                </HorizontalStackLayout.GestureRecognizers>
             </HorizontalStackLayout>
         </Grid>
 
@@ -83,6 +89,7 @@
                                                FontAttributes="Bold" 
                                                TextColor="Green" 
                                                FontSize="15" 
+                                               Padding="2"
                                                ToolTipProperties.Text="Available"
                                                VerticalOptions="Center">
                                             <Label.Triggers>
